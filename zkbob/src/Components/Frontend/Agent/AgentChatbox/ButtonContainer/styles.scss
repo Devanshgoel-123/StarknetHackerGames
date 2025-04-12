@@ -1,0 +1,38 @@
+@import   "@/app/mixin.scss";
+
+.ButtonContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #101010;
+    border: 2px solid #1e1e1e;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    gap: 10px;
+    font-family: "Manrope";
+    @include md{
+        padding: 14px;
+    }
+    @include lg{
+        padding: 12px;
+        width: 100%;
+    }
+    .ButtonHeading{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        color: #ffffff;
+        gap: 8px;
+        text-align: center;
+        align-items: center;
+    }
+    .ButtonInfo{
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}

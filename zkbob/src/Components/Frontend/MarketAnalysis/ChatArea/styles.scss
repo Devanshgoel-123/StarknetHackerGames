@@ -1,0 +1,184 @@
+@import "../../../../app/mixin.scss";
+
+.ChatWrapperPrediction{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    width:100%;
+    padding: 15px;
+    height: 95%;
+    background: transparent;
+    margin-top:20px;
+    @include md{
+        height: 95%;
+    }
+    @include lg{
+        height: 100%;
+        margin-top: 10px;
+        justify-content:space-between;
+        gap: 0;
+        margin-top: 0;
+    }
+    .ChatHeader{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #1e1e1e;
+        
+      .mainHeading{
+        font-size: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        .SideBarIcon{
+            font-size: 20px;
+            background-color: #111111;
+            padding: 12px;
+            border-radius: 12px;
+            &:hover{
+                transform: scale(0.9);
+            }
+        }
+      }
+      .subHeading{
+        font-size: 10px;
+        color: #c1c1c1;
+        width: 90%;
+        text-align: center;
+        @include md{
+            text-align: left;
+            width: 100%;
+        }
+      }
+    }
+    .ChatArea{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        border-bottom: 1px solid #1e1e1e;
+        height: 100%;
+        padding: 12px;
+        justify-content:flex-start;
+        overflow-y: auto;
+        @include md{
+            height: 100%;
+        }
+        @include lg{
+            padding-top:0;
+            height: 90%;
+        }
+        .ReadyQuery{
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            display: flex;
+            margin-bottom: 10px;
+            span{
+                width: auto;
+                background-color: #1a1a1a;
+                border-radius: 12px;
+                padding: 10px;
+                font-size: 12px;
+                @include md{
+                    font-size: 14px;
+                }
+            }
+            @include md{
+                font-size: 12px;
+            }
+            @include lg{
+                margin-block: 10px;
+            }
+            @include xl{
+                font-size: 14px;
+            }
+        }
+
+        .ResponseRow{
+            max-width: 100%;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0;
+            border-radius: 12px;
+            background-color: #1a1a1a;
+            overflow: auto;
+            padding: 12px;
+            @include md{
+                font-size: 12px;
+            }
+            @include xl{
+                font-size: 14px;
+            }
+
+            .ResponseDiv{
+                background-color: #000000;
+                padding: 12px;
+                border-radius:12px;
+                font-size: 10px;
+                @include md{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .ChatFooter{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+
+        .PredictButton{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+            font-size: 10px;
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: #000000;
+            cursor: pointer;
+            background-color: #7bf179;
+            @include md{
+                width: 100%;
+                font-weight: 700;
+                font-size: 15px;
+            }
+            @include lg{
+                width: 60%;
+                font-size: 12px;
+            }
+            @include xxl{
+                font-size: 16px;
+                padding: 16px 22px;
+            }
+        }
+        @include lg{
+            
+        }
+    }
+}
+
+.itemResponse{
+    background-color: transparent;
+    color: #c1c1c1;
+}
+.ResponseRowLoading{
+    min-width: 25%;
+    min-height: 25px;
+    background-color: #1a1a1a;
+    overflow: auto;
+    padding: 12px;
+    border-radius: 12px;
+    @include xxl{
+        min-height: 50px;
+        min-width: 50px;   
+    }
+}

@@ -1,0 +1,335 @@
+@import  "@/app/mixin.scss";
+
+
+$primary-accent: #7bf179; 
+$subtle-bg: rgba(255, 255, 255, 0.05);
+$border-color: #2d3748;
+$gray-text: #a0aec0;
+$green-text: #48bb78;
+$red-text: #f56565;
+$transition-duration: 200ms;
+
+// Animation keyframes
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.PortfolioLoader{
+  display: flex;
+  flex-direction: row;
+  height: 95%;
+  width: 90%;
+  background-color: #111;
+  border: 1px solid #1e1e1e;
+  justify-content: center;
+  align-items: center;
+}
+.portfolio-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 95%;
+  width: 100%;
+  align-items: flex-start;
+  overflow: hidden;
+  gap: 10px;
+  @include md{
+    width: 90%;
+    gap: 10px;
+  }
+  @include lg{
+    flex-direction: row;
+  justify-content: space-evenly;
+  }
+}
+
+.portfolio-card {
+  padding: 15px;
+  background: #111;
+  border-radius: 8px;
+  border: 1px solid #1e1e1e;
+  animation: fade-in 300ms ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 60%;
+  gap: 15px;
+  @include md{
+    justify-content: space-around;
+    padding: 20px;
+    height: 100%;
+  }
+  @include lg{
+    width: 45%;
+    padding: 12px;
+    justify-content:flex-start;
+  }
+  @include xl{
+    padding: 20px;
+    justify-content: space-around;
+  }
+}
+
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ 
+  @include lg{
+    margin-bottom: 10px;
+  }
+  @include xl{
+    margin-bottom: 0;
+  }
+  @include xxl{
+    margin-bottom: 20px;
+  }
+  .portfolio-title {
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    @include lg{
+      font-size: 14px;
+    }
+    @include xl{
+      font-size: 20px;
+    }
+    .portfolio-icon {
+      margin-right: 8px;
+      color: $primary-accent;
+    }
+  }
+
+  .portfolio-actions {
+    display: flex;
+    gap: 8px;
+    @include md{
+      display: none;
+    }
+    .portfolio-action-btn {
+      padding: 8px;
+      background: $subtle-bg;
+      border: 1px solid $border-color;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background $transition-duration;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+.portfolio-value {
+  margin-bottom: 10px;
+   @include xl{
+    margin-bottom: 20px;
+   }
+  .portfolio-value-label {
+    font-size: 12px;
+    @include md{
+      font-size: 14px;
+    }
+    color: $gray-text;
+  }
+
+  .portfolio-value-amount {
+    font-size: 24px;
+    font-weight: 700;
+    @include lg{
+      font-size: 18px;
+    }
+  }
+}
+
+.portfolio-allocations {
+  margin-bottom: 20px;
+
+  .portfolio-allocations-title {
+    font-size: 14px;
+    color: $gray-text;
+    margin-bottom: 8px;
+  }
+
+  .portfolio-allocations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .portfolio-allocation-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background: $subtle-bg;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #ffffff;
+
+      span:first-child {
+        color: $gray-text;
+      }
+
+      span:last-child {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.portfolio-token-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+  height: 230px;
+  @include md{
+    height: 300px;
+  }
+  @include lg{
+    height: 500px;
+  }
+  @include xl{
+    gap: 16px;
+  }
+  .portfolio-token-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background: $subtle-bg;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    transition: background $transition-duration;
+    animation: fade-in-up 300ms ease-out;
+    @include xl{
+      padding: 12px;
+    }
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .portfolio-token-details {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .portfolio-token-symbol {
+        width: 22px;
+        height: 22px;
+        background: $subtle-bg;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+
+        @include md{
+          width: 32px;
+        height: 32px;
+        }
+        @include xl{
+          font-size: 12px;
+        }
+      }
+
+      .portfolio-token-name {
+        font-weight: 500;
+        
+      }
+
+      .portfolio-token-balance {
+       font-size: 10px;
+        color: $gray-text;
+        @include md{
+          font-size: 12px;
+        }
+        @include xl{
+          font-size: 14px;
+        }
+      }
+    }
+
+    .portfolio-token-value {
+      text-align: right;
+
+      .portfolio-token-amount {
+      
+        font-size: 14px;
+        @include md{
+          font-size: 16px;
+        }
+        font-weight: 500;
+        @include xl{
+          font-size: 14px;
+        }
+      }
+
+      .portfolio-token-change {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        @include xl{
+          font-size: 14px;
+        }
+        &.positive {
+          color: $green-text;
+        }
+
+        &.negative {
+          color: $red-text;
+        }
+
+        .portfolio-change-icon {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+.portfolio-view-all-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 8px;
+  background: $subtle-bg;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  color: $primary-accent;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color $transition-duration;
+
+  // &:hover {
+  //   color: color.adjust($primary-accent, $lightness: 10%)
+  // }
+}
+
+
+.midWrapper{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  .leftSide{
+    width: 45%;
+  }
+}

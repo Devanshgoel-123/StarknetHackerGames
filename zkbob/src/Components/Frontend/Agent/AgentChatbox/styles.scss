@@ -1,0 +1,168 @@
+@import   "@/app/mixin.scss" ;
+
+
+.ChatBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px;
+    gap: 16px;
+    background: radial-gradient(63.94% 63.94% at 20% 0, hsla(0, 0%, 100%, .03) 0, hsla(0, 0%, 100%, 0) 100%), #111;
+    border: 2px solid var(--border-color);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    box-sizing: border-box;
+    height: 90%;
+    justify-content: space-between;
+    @include md{
+        justify-content: space-between;
+        gap: 20px;
+        width: 90%;
+        height: 95%;
+    }
+    @include xl{
+        width: 60%;
+    }
+    @include xxl{
+        width: 50%;
+        height: 60%;
+    }
+    .ChatHeader{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        font-size: 12px;
+        gap: 12px;
+        margin-top: 10%;
+        @include md{
+            font-size: 16px;
+            gap: 16px;
+            margin-top: 0;
+        }
+        @include xl{
+            margin-top: 10%;
+        }
+        @include xxl{
+            margin-top: 0;
+        }
+        .SideBarIconHeader{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            @include md{
+                justify-content: center;
+            }
+            .SideBarIcon{
+                font-size: 20px;
+                background-color: #111111;
+                padding: 12px;
+                border-radius: 12px;
+                &:hover{
+                    transform: scale(0.9);
+                }
+            }
+        }
+        .centerHeading{
+           font-size: 22px;
+            justify-content: center;
+            display: flex;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: inherit;
+            background: linear-gradient(95.86deg, var(--text-grey) -20.23%, var(--text-white) 74.96%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            @include md{
+                font-size: 24px;
+            }
+        }
+        :nth-child(2){
+            justify-content: center;
+            display: flex;
+            font-family: "Manrope";
+            color: #d4d4d4;
+        }
+    }
+    .AllButton{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+    .ButtonsWrapper{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        gap: 10px;
+        @include md{
+            flex-direction: column;
+        }
+        @include lg{
+            flex-direction: row;
+        }
+       
+    }
+    .AgentInputContainer{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        flex-direction: row;
+        background-color: #1a1a1a;
+        border: 1px solid #1e1e1e;
+        padding-inline: 16px;
+        padding-block: 8px;
+        border-radius: 8px;
+        margin-top: 15%;     
+        @include md{
+            margin-top: 0;     
+            padding-inline: 20px;
+            padding-block: 4px;
+        }
+        .AgentInput{
+            display: flex;
+             font-size: 12px;
+            height: 50px;
+            border-radius: 8px;
+            border: 0px;
+            background-color: transparent;
+            outline: none;
+            @include md{
+                font-size: 18px;
+                width: 90%;
+            }
+        }
+        
+        .EnterButton{
+            color: aquamarine;
+            display: flex;
+            font-size: 24px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .connectWallet{
+        display: flex;
+        font-size: 12px;
+        height: 50px;
+        border-radius: 8px;
+        border: 0px;
+        background-color: transparent;
+        outline: none;
+        justify-content: center;
+        align-items: center;
+        color: #111111;
+        background-color: #7bf179;
+        @include md{
+            font-size: 18px;
+            width: 40%;
+            max-width: 200px;
+        }
+    }
+}
+
