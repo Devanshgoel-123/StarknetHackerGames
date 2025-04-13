@@ -10,7 +10,6 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { BACKEND_URL } from "@/Components/Backend/Common/Constants";
 import { FormatDisplayTextForChat } from "@/Utils/function";
-import { handleConnect } from "../SideBar";
 dotenv.config();
 interface Props {
   heading: string;
@@ -211,7 +210,7 @@ export const ChatBox=()=>{
         </div>
       </div>
       :
-      <div className="connectWallet" onClick={handleConnect}>
+      <div className="connectWallet" >
         Connect Wallet
       </div>
       }

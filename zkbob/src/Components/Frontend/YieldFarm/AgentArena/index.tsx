@@ -8,7 +8,7 @@ import { useAgentStore, YieldChat, YieldResponse } from "@/store/agent-store";
 import { CustomTextLoader } from "@/Components/Backend/Common/CustomTextLoader";
 import Image from "next/image";
 import { BACKEND_URL, DAPP_LOGO } from "@/Components/Backend/Common/Constants";
-import { handleConnect } from "../../Agent/SideBar";
+// import { handleConnect } from "../../Agent/SideBar";
 import dotenv from "dotenv";
 import { FormatDisplayTextForChat, prettyPrintObject } from "@/Utils/function";
 import { useMediaQuery } from "@mui/material";
@@ -244,9 +244,9 @@ export const AgentArena = () => {
         <div className="EnterButton" onClick={handleEnterClick}>
           <AiOutlineEnter />
         </div>
-      </div> 
+      </div>
       :
-      <div className="connectWallet" onClick={handleConnect}>
+      <div className="connectWallet">
         Connect Wallet
       </div>
       }
