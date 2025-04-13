@@ -29,7 +29,6 @@ export const Sidebar = () => {
     }))
   );
 
-  // Starknet wallet hooks
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
@@ -60,7 +59,6 @@ export const Sidebar = () => {
     }
   }, [showStatus]);
 
-  // Show status message
   const showStatusMessage = (message: React.SetStateAction<string>) => {
     setStatusMessage(message);
     setShowStatus(true);
@@ -72,7 +70,6 @@ export const Sidebar = () => {
     return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
-  // Handle wallet connection
   async function handleConnect() {
     try {
       setIsConnecting(true);
@@ -82,25 +79,23 @@ export const Sidebar = () => {
         return;
       }
       
-      await connect({ connector: connector as Connector });
+      connect({ connector: connector as Connector });
       console.log("Wallet connected successfully");
       showStatusMessage("Wallet connected successfully");
-      
-      // Update agent store with connected wallet address
-      if (address) {
-        useAgentStore.getState().setWalletAddress(address);
-        
-        // If you need to fetch agent wallet address based on user wallet
-        try {
-          const agentResponse = await axios.post(`${process.env.BACKEND_URL || ''}/walletRouter`, {
-            walletAddress: address
-          });
+      console.log(address)
+      if (address!==undefined) {
+        console.log("the address is",address)
+        useAgentStore.getState().setAgentWalletAddress(address)
+        // try {
+        //   const agentResponse = await axios.post(`${process.env.BACKEND_URL || ''}/walletRouter`, {
+        //     walletAddress: address
+        //   });
           
-          useAgentStore.getState().setAgentWalletAddress(agentResponse.data.agentWalletAddress);
-          useAgentStore.getState().setAgentKey(agentResponse.data.key);
-        } catch (error) {
-          console.error("Error fetching agent wallet:", error);
-        }
+        //   useAgentStore.getState().setAgentWalletAddress(agentResponse.data.agentWalletAddress);
+        //   useAgentStore.getState().setAgentKey(agentResponse.data.key);
+        // } catch (error) {
+        //   console.error("Error fetching agent wallet:", error);
+        // }
       }
     } catch (error) {
       console.error("Connection failed:", error);
@@ -110,7 +105,14 @@ export const Sidebar = () => {
     }
   }
 
-  // Handle wallet disconnection
+
+  useEffect(() => {
+    if (isConnected && address) {
+      console.log("the address is", address);
+      useAgentStore.getState().setAgentWalletAddress(address);
+    }
+  }, [address, isConnected]);
+
   const handleDisconnect = async () => {
     try {
       await disconnect();
@@ -210,9 +212,9 @@ export const Sidebar = () => {
                   onClick={() => {
                     console.log("Setting label as", item.label);
                     useAgentStore.getState().setOpenSideBar(false);
-                    if(agentWalletAddress !== ""){
+                    // if(agentWalletAddress !== ""){
                       useAgentStore.getState().setActiveComponent(item.label);
-                    }
+                    // }
                   }}
                 >
                   <div className="sidebar-menu-icon">{item.icon}</div>
@@ -333,9 +335,9 @@ export const Sidebar = () => {
               }
               onClick={() => {
                 useAgentStore.getState().setOpenSideBar(false);
-                if(agentWalletAddress !== ""){
+                // if(agentWalletAddress !== ""){
                   useAgentStore.getState().setActiveComponent(item.label);
-                }
+                // }
               }}
             >
               <div className="sidebar-menu-icon">{item.icon}</div>

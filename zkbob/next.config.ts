@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "media-hosting.imagekit.io"
       },
+      {
+        protocol:"https",
+        hostname:'raw.githubusercontent.com'
+      },
+      {
+        protocol:"https",
+        hostname:"assets.coingecko.com"
+      }
     ],
   },
   compress: true,

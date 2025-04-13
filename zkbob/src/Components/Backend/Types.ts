@@ -58,8 +58,19 @@ export interface Token {
   image:string;
 }
 
+export interface TokenForPortfolio{
+	name:string;
+	valueUsd:string;
+	balance:string;
+	decimals:string;
+	image:string;
+	type:string;
+	address:string;
+}
+
+
 export interface UserPortfolio {
-  tokens: Token[];
+  tokens: TokenForPortfolio[];
   total_value_usd: number;
 }
 

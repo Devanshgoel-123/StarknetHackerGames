@@ -4,7 +4,7 @@ import "./styles.scss";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import { BsLayoutTextSidebar } from "react-icons/bs";
-import { Token, UserPortfolio } from '@/Components/Backend/Types';
+import { Token, TokenForPortfolio, UserPortfolio } from '@/Components/Backend/Types';
 import { UserAllocations } from '@/Components/Backend/Types';
 import { PortfolioRebalancer } from './Rebalancer';
 import { CustomSpinner } from '@/Components/Backend/Common/CustomSpinner';
@@ -37,20 +37,21 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
     const fetchPortfolio = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/userPortfolio`,{
-         params:{
-          agentWalletAddress:agentWalletAddress,
-          key:agentKey
-         }
+          params:{
+            agentWalletAddress:agentWalletAddress
+          }
         });
-        const Tokens:Token[]=response.data.userPortfolio.tokens;
+        console.log(response.data)
+        const Tokens:TokenForPortfolio[]=response.data.userPortfolio.tokens;
         console.log(Tokens)
-        const stableTokens=Tokens.filter((item)=>item.category==="stablecoin");
-        const nativeTokens=Tokens.filter((item)=>item.category==="native");
-        const otherTokens=Tokens.filter((item)=>item.category==="other");
-        const stableSum = stableTokens.reduce((sum, token) => sum + token.value_usd, 0);
-        const nativeSum = nativeTokens.reduce((sum, token) => sum + token.value_usd, 0);
-        const otherSum = otherTokens.reduce((sum, token) => sum + token.value_usd, 0);
+        const stableTokens=Tokens.filter((item)=>item.type==="stablecoin");
+        const nativeTokens=Tokens.filter((item)=>item.type==="native");
+        const otherTokens=Tokens.filter((item)=>item.type==="other");
+        const stableSum = stableTokens.reduce((sum, token) => sum + Number(token.valueUsd), 0);
+        const nativeSum = nativeTokens.reduce((sum, token) => sum + Number(token.valueUsd), 0);
+        const otherSum = otherTokens.reduce((sum, token) => sum + Number(token.valueUsd), 0);
         const totalSum=response.data.userPortfolio.total_value_usd;
+        console.log("the total sum is",totalSum)
         if(totalSum===0){
           setAllocation({
             stablecoin:0,
@@ -58,6 +59,7 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
             other:0
           })
         }else{
+          console.log(Number(((stableSum/totalSum)*100).toFixed(2)), Number(((nativeSum/totalSum)*100).toFixed(2)), Number(((otherSum/totalSum)*100).toFixed(2)))
           setAllocation({
             stablecoin:Number(((stableSum/totalSum)*100).toFixed(2)),
             native:Number(((nativeSum/totalSum)*100).toFixed(2)),
@@ -123,9 +125,9 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
       </div>
 
       <div className="portfolio-token-list">
-        {portfolio.tokens.sort((a,b)=> b.value_usd - a.value_usd).map((token, index) => (
+        {portfolio.tokens.sort((a,b)=> Number(b.valueUsd) - Number(a.valueUsd)).map((token, index) => (
           <div
-            key={token.tokenAddress} 
+            key={token.address} 
             className="portfolio-token-item"
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -136,16 +138,16 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
               <div>
                 <div className="portfolio-token-name">{token.name.toUpperCase()}</div>
                 <div className="portfolio-token-balance">
-                  {(token.amount / Math.pow(10, token.decimals)).toFixed(4)} {token.name.toUpperCase()}
+                  {(Number(token.balance) / Math.pow(10, Number(token.decimals))).toFixed(4)} {token.name.toUpperCase()}
                 </div>
               </div>
             </div>
             <div className="portfolio-token-value">
-              <div className="portfolio-token-amount">${token.value_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="portfolio-token-amount">${token.valueUsd.toLocaleString()}</div>
               <div
                 className={`portfolio-token-change`}
               >
-               ${parseFloat(token.price_usd).toFixed(4)}
+               ${parseFloat(token.valueUsd).toFixed(4)}
               </div>
             </div>
           </div>
@@ -197,9 +199,9 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
         </div>
 
       <div className="portfolio-token-list">
-        {portfolio.tokens.sort((a,b)=> b.value_usd - a.value_usd).map((token, index) => (
+        {portfolio.tokens.sort((a,b)=> Number(b.valueUsd) - Number(a.valueUsd)).map((token, index) => (
           <div
-            key={token.tokenAddress} 
+            key={token.address} 
             className="portfolio-token-item"
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -210,16 +212,16 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
               <div>
                 <div className="portfolio-token-name">{token.name.toUpperCase()}</div>
                 <div className="portfolio-token-balance">
-                  {(token.amount / Math.pow(10, token.decimals)).toFixed(4)} {token.name.toUpperCase()}
+                  {(Number(token.balance) / Math.pow(10, Number(token.decimals))).toFixed(4)} {token.name.toUpperCase()}
                 </div>
               </div>
             </div>
             <div className="portfolio-token-value">
-              <div className="portfolio-token-amount">${token.value_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+              <div className="portfolio-token-amount">${Number(token.valueUsd).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
               <div
                 className={`portfolio-token-change`}
               >
-               ${parseFloat(token.price_usd).toFixed(4)}
+               ${parseFloat(token.valueUsd).toFixed(4)}
               </div>
             </div>
           </div>

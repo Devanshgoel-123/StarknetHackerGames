@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Slider, TextField, useMediaQuery } from "@mui/material";
 import { RefreshCw } from "lucide-react";
 import "./styles.scss";
-import { Token } from "@/Components/Backend/Types";
+import { Token, TokenForPortfolio } from "@/Components/Backend/Types";
 import axios from "axios";
 import { useAgentStore } from "@/store/agent-store";
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
@@ -18,7 +18,7 @@ interface Props {
   stableAllocation: number;
   otherAllocation: number;
   nativeAllocation: number;
-  tokens: Token[];
+  tokens: TokenForPortfolio[];
   totalValue: number;
 }
 
@@ -38,7 +38,7 @@ export const PortfolioRebalancer: React.FC<Props> = ({
   const isXxlDevice=useMediaQuery("(min-width: 1300px)");
   const isXlDevice = useMediaQuery("(min-width: 1020px) and (max-width: 1279px)")
   const mobileDevide=useMediaQuery("(max-width: 600px)")
-  const calculateCategoryValues = (tokenList: Token[]) => {
+  const calculateCategoryValues = (tokenList: TokenForPortfolio[]) => {
     const categoryValues = {
       stable: 0,
       native: 0,
@@ -46,7 +46,7 @@ export const PortfolioRebalancer: React.FC<Props> = ({
     };
     
     tokenList.forEach(token => {
-      categoryValues[token.category as keyof typeof categoryValues] += token.value_usd;
+      categoryValues[token.type as keyof typeof categoryValues] += Number(token.valueUsd);
     });
     
     return categoryValues;
