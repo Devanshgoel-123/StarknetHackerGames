@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.scss";
+import { Providers } from './provider';
 
 export const metadata: Metadata = {
   title: "DeFiZen",
@@ -15,13 +16,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <div className="AppWrapper">
-          <div className="AppContainer">
-            <div style={{ display: "flex", flex: 1, overflow: "auto" }}>
-              {children}
+        <Providers>
+          <div className="AppWrapper">
+            <div className="AppContainer">
+              <div style={{ display: "flex", flex: 1, overflow: "auto" }}>
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        </Providers>
       </body>
     </html>
   );

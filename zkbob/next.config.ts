@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -18,14 +19,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "media-hosting.imagekit.io"
       },
-      // {
-      //   protocol: "https",
-      //   hostname: "images.scalebranding.com"
-      // },
-      // {
-      //   protocol: "https",
-      //   hostname: "images.scalebranding.com"
-      // },
     ],
   },
   compress: true,

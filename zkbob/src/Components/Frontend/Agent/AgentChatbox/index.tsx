@@ -93,8 +93,8 @@ export const ChatBox=()=>{
   const ButtonContent: Props[] = [
     {
       heading: "Market Analysis",
-      content: "Conduct An In Depth Analysis of Any Supported Token on Aptos",
-      query: "Conduct An In Depth Analysis of Aptos Token",
+      content: "Conduct An In Depth Analysis of Any Supported Token on StarkNet",
+      query: "Conduct An In Depth Analysis of $STRK Token",
     },
     {
       heading: "Fetch Token Price",
