@@ -1,0 +1,132 @@
+ @import "../../../../app/mixin.scss";
+
+
+// .TransactionBox{
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: flex-start;
+//     padding: 12px 18px;
+//     background-color: #1e1e1e;
+//     border-radius: 12px;
+//     width: 100%;
+//     height: 80%;
+//     border: 2px solid var(--border-color);
+//     display: flex;
+//     flex-direction: row;
+//     .TransactionRow{
+//         display: flex;
+//         flex-direction:row;
+//         justify-content: space-between;
+//         .AgentColumn{
+//             display: flex;
+//             flex-direction: column;
+//             align-items: center;
+//             gap: 5px;
+//             :nth-child(1){
+//                 font-size: 18px;
+//             }
+//             .tokenLogo{
+//                 padding: 8px 18px;
+//                 border-radius: 12px;
+//                 background-color: #170606;
+//                 display: flex;
+//                 flex-direction: row;
+//                 align-items: center;
+//                 justify-content: flex-start;
+//                 gap: 5px;
+//                 border: 2px solid #000000;
+//             }
+//     }
+//     }
+// }
+
+/* styles.scss */
+/* styles.scss - Dark Theme */
+
+.TransactionBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background-color: #1a1a1a;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  
+  .TransactionRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 12px 16px;
+    border-bottom: 1px solid #333;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &.header {
+      background-color: #252525;
+      font-weight: 600;
+      color: #e0e0e0;
+      font-size: 14px;
+    }
+  }
+  
+  .AgentColumn {
+    flex: 1;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    span {
+      font-size: 14px;
+      color: #e0e0e0;
+      
+      &.tokenLogo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .TransactionRow {
+      flex-direction: column;
+      padding: 8px;
+      
+      &.header {
+        display: none; /* Hide headers on mobile view */
+      }
+    }
+    
+    .AgentColumn {
+      margin-bottom: 8px;
+      
+      &:before {
+        content: attr(data-label);
+        font-size: 12px;
+        font-weight: 600;
+        color: #999;
+        margin-bottom: 4px;
+      }
+    }
+  }
+  
+  /* For transaction hash truncation */
+  .AgentColumn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  
+  /* Hover effect for rows */
+  .TransactionRow:not(.header):hover {
+    background-color: #252525;
+    transition: background-color 0.2s ease;
+  }

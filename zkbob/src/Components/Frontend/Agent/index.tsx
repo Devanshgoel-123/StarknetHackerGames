@@ -11,6 +11,7 @@ import { Portfolio } from "../Portfolio";
 import { MarketAnalysisWrapperContainer } from "../MarketAnalysis";
 import { useMediaQuery } from "@mui/material";
 import YieldFarm from "../YieldFarm";
+import { AutonomousAgentInterface } from "../AutonomousMode";
 declare global {
   interface Window {
     aptos?: any;
@@ -31,7 +32,7 @@ export const ChatAgent = () => {
       {!openArena ? (
         <div className="ChatBoxWrapper">
           {
-             activeComponent==="chat" ? <ChatBox/> : activeComponent==="Market Analysis" ? <MarketAnalysisWrapperContainer/>: activeComponent==="Portfolio" ?<Portfolio/> : <YieldFarm />
+             activeComponent==="chat" ? <AutonomousAgentInterface/> : activeComponent==="Market Analysis" ? <MarketAnalysisWrapperContainer/>: activeComponent==="Portfolio" ?<Portfolio/> :  activeComponent === "Yield Finder" ? <YieldFarm /> : <AutonomousAgentInterface/>
           }
         </div>
       ) : (
@@ -40,7 +41,8 @@ export const ChatAgent = () => {
             <AgentArena />
           ) : activeComponent === "Market Analysis" ? (
             <MarketAnalysisWrapperContainer />
-          ) :  activeComponent==="Portfolio" ?<Portfolio/> : <YieldFarm />
+          ) :  activeComponent==="Portfolio" ?<Portfolio/> :
+           activeComponent === "Yield Finder" ? <YieldFarm /> : <AutonomousAgentInterface/>
           }
         </div>
       )}

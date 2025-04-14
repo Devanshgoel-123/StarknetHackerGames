@@ -1,0 +1,225 @@
+@import "../../../app/mixin.scss";
+
+.AutonomousInterface {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px; 
+  padding: 16px;
+  background: #121212;
+  height: 90%;
+  border-radius: 16px;
+  border: 1px solid #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  
+  @include md {
+    padding: 20px;
+  }
+  
+  .AgentInformation {
+    display: flex;
+    width: 100%;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    padding: 10px 12px;
+    border: 1px solid #2a2a2a;
+    height: auto;
+    min-height: 80px;
+    align-items: center;
+    
+    @include md {
+      flex-direction: row;
+    }
+    
+    @media (max-width: 767px) {
+      flex-direction: column;
+      gap: 8px;
+      height: auto;
+      padding: 12px;
+    }
+  }
+  
+  .AgentColumn {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 4px 12px; 
+    
+    span {
+      &:first-child {
+        font-size: 13px; 
+        color: #8e8e8e;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      &:last-of-type {
+        font-size: 16px; 
+        font-weight: 600;
+        color: #e0e0e0;
+      }
+    }
+    
+    .DatePicker {
+      width: 100%;      
+      .react-datepicker-wrapper {
+        width: 100%;
+        
+        .react-datepicker__input-container {
+          width: 100%;
+          
+          input {
+            width: 100%;
+            background-color: #252525;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 6px 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+            height: 32px;
+            
+            &:focus {
+              border-color: #7bf179;
+              outline: none;
+              box-shadow: 0 0 0 2px rgba(123, 241, 121, 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .AgentColumnFunds {
+    display: flex;
+    flex-direction: row;
+    flex: 1.5;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px;
+    
+    .AddFundsButton {
+      background-color: #7bf179;
+      color: #111111;
+      border: none;
+      border-radius: 6px; 
+      padding: 6px 12px; 
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      height: 32px;
+      min-width: 80px;
+      
+      &:hover {
+        background-color: #6ae068;
+        transform: translateY(-1px); 
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+      
+      &:disabled {
+        background-color: #3d5f3c;
+        color: #888;
+        cursor: not-allowed;
+      }
+    }
+    
+    .Input {
+      flex: 1;
+      
+      .InputField {
+        width: 100%;
+        background-color: #252525;
+        border: 1px solid #333;
+        border-radius: 6px; 
+        padding: 6px 8px;
+        color: #e0e0e0;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        height: 32px;
+        
+        &:focus {
+          border-color: #7bf179;
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(123, 241, 121, 0.2);
+        }
+        
+        &::placeholder {
+          color: #666;
+        }
+      }
+    }
+    
+    @media (max-width: 767px) {
+      flex-direction: row;
+      width: 100%;
+      
+      .AddFundsButton {
+        width: auto;
+      }
+      
+      .Input {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.TransactionBox {
+  width: 100%;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+  
+  .TransactionRow {
+    display: flex;
+    width: 100%;
+    
+    &.header {
+      background-color: #252525;
+      padding: 8px 16px; 
+      border-bottom: 1px solid #333;
+      
+      .AgentColumn {
+        font-size: 13px; 
+        color: #8e8e8e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0 12px;
+      }
+    }
+    
+    &:not(.header) {
+      padding: 8px 16px;
+      border-bottom: 1px solid #252525;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &:hover {
+        background-color: #202020;
+      }
+      
+      .AgentColumn {
+        span {
+          color: #e0e0e0;
+          
+          &.tokenLogo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
