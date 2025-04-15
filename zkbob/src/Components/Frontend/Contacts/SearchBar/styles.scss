@@ -1,0 +1,30 @@
+.searchbar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #1f2937; /* bg-secondary / dark gray */
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid #374151; /* border-gray-700 */
+    transition: border-color 0.2s ease;
+  }
+  
+  .searchbar-container:hover {
+    border-color: #4ade80; 
+  }
+  
+  .searchbar-icon {
+    position: absolute;
+    left: 16px;
+    color: #9ca3af; /* gray-400 */
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+  }
+  
+  .searchbar-input {
+    padding-left: 36px !important; /* for the icon */
+    color: white !important;
+    font-size: 0.95rem;
+  }
+  

@@ -143,7 +143,8 @@ export const Sidebar = () => {
     { id: "price", label: "Market Analysis", icon: <BarChart3 size={18} /> },
     { id: "portfolio", label: "Portfolio", icon: <PieChart size={18} /> },
     { id: "yield", label: "Yield Finder", icon: <PieChart size={18} /> },
-    {id: "autonomous", label : "Autonomous Mode",icon: <PieChart size={18} /> }
+    {id: "autonomous", label : "Autonomous Mode",icon: <PieChart size={18} /> },
+    {id: "contacts", label : "Contacts",icon: <PieChart size={18} /> }
   ];
   
   const StatusMessage = () => (

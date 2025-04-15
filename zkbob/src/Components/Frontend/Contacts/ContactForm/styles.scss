@@ -1,0 +1,51 @@
+@import "../../../../app/mixin.scss";
+.form-container {
+    background-color: #1f2937; /* dark background */
+    border-radius: 10px;
+    padding: 32px;
+    max-width: 720px;
+    margin: 0 auto;
+    color: white;
+  }
+  
+  .form-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .form-field.full-width {
+    flex: 1 1 100%;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+    width: 100%;
+  }
+  
+  .submit-btn {
+    background-color: #22c55e !important; /* green-500 */
+  }
+  
+  .submit-btn:hover {
+    background-color: #16a34a !important; /* green-600 */
+  }
+  
