@@ -9,11 +9,12 @@ import axios from "axios";
 import "./styles.scss";
 import { BACKEND_URL } from "@/Components/Backend/Common/Constants"
 import { useShallow } from "zustand/react/shallow"
-import { useAgentStore } from "@/store/agent-store"
+import { useAgentStore } from "@/store/agent-store";
+
 export interface Contact {
     id: string;
     name: string;
-    walletAddress: string;
+    address: string;
     userId:string;
   }
   
@@ -23,7 +24,7 @@ export function ContactWrapper() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showAddContact, setShowAddContact] = useState(false);
   const {
-    agentWalletAddress
+    agentWalletAddress,
   }=useAgentStore(useShallow((state)=>({
     agentWalletAddress:state.agentWalletAddress
   })))
@@ -37,19 +38,29 @@ export function ContactWrapper() {
           userAddress:agentWalletAddress
         }
       }) 
-      console.log(result.data)
+      console.log(result.data.result)
       const contacts=result.data.result
       setContacts(contacts)
     }
     fetchUserContacts();
   },[])
 
-  const handleAddContact = (contact: Omit<Contact, "id">) => {
-    const newContact = {
-      ...contact,
-      id: Date.now().toString(),
-    }
-    setContacts([...contacts, newContact])
+  const handleAddContact = async (contact: Omit<Contact, "id">) => {
+    const newContact =contact;
+    console.log("the new contact is",newContact)
+    try{
+      const result=await axios.post(`${BACKEND_URL}/userContact/save`, {
+        userAddress: agentWalletAddress,
+        contactAddress: newContact.address,
+        name: newContact.name
+      })
+      console.log(result.data.message)
+      if(result.data.message.success){
+        alert("Contact Saved Successfully");
+      }
+    }catch(err){
+      console.log("Error initialising the contact",err)
+    }    
     setShowAddContact(false)
   }
 
@@ -58,15 +69,11 @@ export function ContactWrapper() {
     setEditingContact(null)
   }
 
-  const handleDeleteContact = (id: string) => {
-    setContacts(contacts.filter((contact) => contact.id !== id))
-  }
-
   const filteredContacts = contacts.filter((contact) => {
     const searchLower = searchQuery.toLowerCase()
     return (
       contact.name.toLowerCase().includes(searchLower) ||
-      contact.walletAddress.toLowerCase().includes(searchLower)
+      contact.address.toLowerCase().includes(searchLower)
     )
   })
 
@@ -108,7 +115,7 @@ export function ContactWrapper() {
             initialData={editingContact}
           />
         ) : (
-          <ContactsList contacts={filteredContacts} onEdit={setEditingContact} onDelete={handleDeleteContact} />
+          <ContactsList contacts={filteredContacts} onEdit={setEditingContact} />
         )}
       </div>
     </div>

@@ -9,13 +9,12 @@ import "./styles.scss";
 import Image from "next/image";
 interface ContactsListProps {
   contacts: Contact[]
-  onEdit: (contact: Contact) => void
-  onDelete: (id: string) => void
+  onEdit: (contact: Contact) => void;
 }
 
-export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) {
+export function ContactsList({ contacts, onEdit }: ContactsListProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  
+  console.log("The received contacts are",contacts)
   const copyToClipboard = (text: string, contactId: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(contactId);
@@ -26,7 +25,7 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
   }
   
   const truncateAddress = (address: string) => {
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+    return `${address.substring(0, 15)}...${address.substring(address.length - 4)}`;
   }
   
   if (contacts.length === 0) {
@@ -63,24 +62,15 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
                       <Edit className="action-icon" />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Delete contact">
-                    <IconButton
-                      className="delete-button"
-                      onClick={() => onDelete(contact.id)}
-                      size="small"
-                    >
-                      <Trash2 className="action-icon" />
-                    </IconButton>
-                  </Tooltip>
                 </div>
               </div>
               
               <div className="address-container">
-                <span className="wallet-address">{truncateAddress(contact.walletAddress)}</span>
+                <span className="wallet-address">{truncateAddress(contact.address)}</span>
                 <Tooltip title={isCopied ? "Copied!" : "Copy address"}>
                   <div
                     className="copy-button"
-                    onClick={() => copyToClipboard(contact.walletAddress, contact.id)}      
+                    onClick={() => copyToClipboard(contact.address, contact.id)}      
                   >
                     {isCopied ? (
                       <CheckCircle className="copy-success" />

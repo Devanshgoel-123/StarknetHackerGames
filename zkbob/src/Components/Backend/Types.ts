@@ -25,6 +25,8 @@ export interface SupabaseToken {
     feature2:string;
     tokenImage:string;
     protocolImage:string;
+    poolName:string;
+	  apy:string;
   }
 
 export interface ArbitrageOpportunity {

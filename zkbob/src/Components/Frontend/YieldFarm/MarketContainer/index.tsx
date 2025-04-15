@@ -24,6 +24,7 @@ const MarketContainer: React.FC<MarketContainerProps> = ({ data}:MarketContainer
   const handleEnterClick=async (value:string)=>{
     try{
      if(amount>0){
+      useAgentStore.getState().setYieldAgentFetching(true)
       console.log(`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`)
       useAgentStore.getState().setActiveYieldChat(`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`)
       const response=await axios.post(`${BACKEND_URL}/depositWithdraw/agent`,{
@@ -58,35 +59,18 @@ const MarketContainer: React.FC<MarketContainerProps> = ({ data}:MarketContainer
       <div className="header">
         <span className="market-cap">
            <Image src={data.protocolImage} height={30} width={30} alt="protocolImage" className="protocolImage"/>
-           <span >{data.protocol}</span>
+           {/* <span >{data.protocol}</span> */}
+           <span>{data.poolName}</span>
         </span>
+       
         <span className="market-cap">
+       
         <Image src={data.tokenImage} height={30} width={30} alt="protocolImage" className="protocolImage"/>
-          {data.tokenName}
+          {data.tokenName.toUpperCase()}
+          <span className="market-cap">{data.apy}</span>
           </span>
 
       </div>
-
-      {/* <div className={`market-data-container ${MobileDevice ? "mobile" : ""}`}>
-        <div className="market-data">
-          <span className="market-data-label">Deposit APR</span>
-          <span className="market-data-value">
-            {(data.borrowApr * 100).toFixed(2)} %
-          </span>
-        </div>
-        <div className="market-data">
-          <span className="market-data-label">Withdraw APR</span>
-          <span className="market-data-value">
-            {(data.supplyApr * 100).toFixed(2)} %
-          </span>
-        </div>
-        <div className="market-data">
-          <span className="market-data-label">Coin Price</span>
-          <span className="market-data-value">
-            ${data.coinPrice.toFixed(4)}
-          </span>
-        </div>
-      </div> */}
 
       <div className="form-container">
         <input

@@ -98,22 +98,20 @@ export const AgentArena = () => {
       });
 
       try {
-        const { data } = await axios.post(`${BACKEND_URL}/userAnalysis`, {
-          message: userInputRef.current?.value,
-          agentKey:agentKey,
-          agentWalletAddress:agentWalletAddress
-        });
-      
-        delete data.data.recommendedAction.actionRequired;
-        delete data.data.swap;
-        delete data.data.userQueryResponse;
+        const response=await axios.post(`${BACKEND_URL}/depositWithdraw/agent`,{
+          messages:[{
+           role:"user",
+          content:`userInputRef.current?.value`
+          }],
+          address:agentWalletAddress
+        })
         useAgentStore.getState().setActiveYieldResponse({
-          analysis: prettyPrintObject(data.data),
-        });
+          analysis:response.data.message.finalResponse
+        })
         useAgentStore.getState().setYieldChats({
           query: activeChat,
           response: {
-            analysis: prettyPrintObject(data.data),
+            analysis:response.data.message.finalResponse,
           },
         });
         useAgentStore.getState().setYieldAgentFetching(false)

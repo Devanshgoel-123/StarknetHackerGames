@@ -15,12 +15,11 @@ interface ContactFormProps {
 
 export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProps) {
   const [name, setName] = useState(initialData?.name || "")
-  const [walletAddress, setWalletAddress] = useState(initialData?.walletAddress || "")
+  const [walletAddress, setWalletAddress] = useState(initialData?.address || "")
   const [isListening, setIsListening] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(false)
   const walletInputRef = useRef<HTMLInputElement>(null)
 
-  // Check if speech recognition is supported
   useEffect(() => {
     const supported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
     setSpeechSupported(supported);
@@ -32,13 +31,12 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
     const contactData = {
       ...(initialData?.id ? { id: initialData.id } : {}),
       name,
-      walletAddress,
+      address:walletAddress,
     }
 
     onSubmit(contactData as Contact)
   }
 
-  // Speech recognition functions
   const toggleSpeechRecognition = () => {
     if (isListening) {
       stopSpeechRecognition();
@@ -66,7 +64,6 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
         
         if (event.results[i].isFinal) {
           finalTranscript += transcript;
-          // Remove spaces and format as wallet address
           const formattedAddress = finalTranscript.replace(/\s+/g, '');
           setWalletAddress(formattedAddress);
         } else {
