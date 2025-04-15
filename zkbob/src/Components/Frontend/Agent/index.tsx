@@ -33,7 +33,7 @@ export const ChatAgent = () => {
       {!openArena ? (
         <div className="ChatBoxWrapper">
           {
-             activeComponent==="chat" ? <AutonomousAgentInterface/> : activeComponent==="Market Analysis" ? <MarketAnalysisWrapperContainer/>: activeComponent==="Portfolio" ?<Portfolio/> :  activeComponent === "Yield Finder" ? <YieldFarm /> : activeComponent === "Contacts" ? <ContactWrapper/>: <AutonomousAgentInterface/>
+             activeComponent==="chat" ? <ChatBox/> : activeComponent==="Market Analysis" ? <MarketAnalysisWrapperContainer/>: activeComponent==="Portfolio" ?<Portfolio/> :  activeComponent === "Yield Finder" ? <YieldFarm /> : activeComponent === "Contacts" ? <ContactWrapper/>: <AutonomousAgentInterface/>
           }
         </div>
       ) : (
@@ -43,7 +43,7 @@ export const ChatAgent = () => {
           ) : activeComponent === "Market Analysis" ? (
             <MarketAnalysisWrapperContainer />
           ) :  activeComponent==="Portfolio" ?<Portfolio/> :
-           activeComponent === "Yield Finder" ? <YieldFarm /> : <AutonomousAgentInterface/>
+           activeComponent === "Yield Finder" ? <YieldFarm /> : activeComponent === "Contacts" ? <ContactWrapper/>: <AutonomousAgentInterface/>
           }
         </div>
       )}

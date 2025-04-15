@@ -6,18 +6,49 @@ import { useState } from "react";
 import { connect, StarknetWindowObject } from '@starknet-io/get-starknet'; 
 import { RpcProvider, uint256 } from "starknet";
 import { WalletAccount, provider, wallet } from 'starknet'; 
-import { AGENT_CONTRACT_ADDRESS } from "@/Components/Backend/Common/Constants";
+import { AGENT_CONTRACT_ADDRESS, BACKEND_URL } from "@/Components/Backend/Common/Constants";
 import { useAgentStore } from "@/store/agent-store";
 import { TransacitonsContainer } from "./Transactions.tsx";
+import axios from "axios";
+import { useShallow } from "zustand/react/shallow";
 
-const myFrontendProviderUrl = 'https://free-rpc.nethermind.io/sepolia-juno/v0_7';
 
 export const AutonomousAgentInterface=()=>{
     const provider = new RpcProvider({ nodeUrl: process.env.ALCHEMY_API_KEY });
     const [deadline, setDeadline] = useState(new Date());
     const [amount, setAmount]=useState<string>("0.00");
+    const [stopLoss, setStopLoss]=useState<string>("0.00");
     const [account, setAccount] = useState<WalletAccount | null>(null);
     const [loading, setLoading] = useState(false);
+    const [totalAmount,setTotalAmount]=useState<number>(0);
+    const [totalstopLoss,setTotalStopLoss]=useState<number>(0);
+    const [holding,setHoldingUsd]=useState<number>(0);
+    const [profit,setProfit]=useState<string>("0.00"); 
+    const {
+        userWalletAddress
+    }=useAgentStore(useShallow((state)=>({
+        userWalletAddress:state.walletAddress
+    })))
+    
+   useEffect(()=>{
+    const agentHoldings=async()=>{
+        try{
+            const data=await axios.get(`${BACKEND_URL}/userPortfolio/agentTotal`,{
+                params:{
+                    agentWalletAddress:AGENT_CONTRACT_ADDRESS
+                }
+            })
+            const agentData=data.data;
+            console.log(data.data)
+            setHoldingUsd(agentData.totalHoldings)
+            setTotalStopLoss(agentData.stopLoss)
+            setTotalAmount(agentData.totalAmount)
+        }catch(err){
+            console.log("error is there fetching agent total",err)
+        }
+    }
+    agentHoldings()
+   },[])
 
     useEffect(()=>{
         const handleConnect = async () => {
@@ -50,39 +81,42 @@ export const AutonomousAgentInterface=()=>{
         }
     }, [account]);
 
-    const handleAmountChange = (e:ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/^\$/, '');
-        if (value === '' || /^\d*\.?\d*$/.test(value)) {
-            setAmount(value);
-        }
-    };
-
-
    const AddFundsToAgent=async()=>{
        if (!account) {
         alert("Please connect your wallet.");
         return;
        }
+       if(stopLoss==="0.00"){
+        alert("Please Enter some stop loss.");
+        return
+       }
        setLoading(true);
-       const ETH_ADDRESS="0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+       const strkAddress="0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
        const cleanAmount = amount.replace(/[^0-9.]/g, "");
        const parsedAmount = parseFloat(cleanAmount);
        const amountInWei = BigInt(Math.floor(parsedAmount * 1e18));
        const amountUint256 = uint256.bnToUint256(amountInWei);
-
        try {
-        const tx = await account.execute([
-            {
-                contractAddress: ETH_ADDRESS,
-                entrypoint: "transfer",
-                calldata: [
-                    AGENT_CONTRACT_ADDRESS,
-                    amountUint256.low.toString(),
-                    amountUint256.high.toString()
-                ]
-            }
-        ]);
-        console.log("TX hash:", tx.transaction_hash);
+        // const tx = await account.execute([
+        //     {
+        //         contractAddress: strkAddress,
+        //         entrypoint: "transfer",
+        //         calldata: [
+        //             AGENT_CONTRACT_ADDRESS,
+        //             amountUint256.low.toString(),
+        //             amountUint256.high.toString()
+        //         ]
+        //     }
+        // ]);
+        // console.log("TX hash:", tx.transaction_hash);
+        const result=await axios.post(`${BACKEND_URL}/autonomous/createDeposit`,{
+            agentWallet:AGENT_CONTRACT_ADDRESS, 
+            userWallet:userWalletAddress, 
+            amount:amount, 
+            stopLoss:stopLoss, 
+            expectedProfit:profit,
+            deadline:deadline
+        })
         alert("Transaction sent!");
     } catch (err) {
         console.error("Transaction failed:", err);
@@ -102,11 +136,11 @@ export const AutonomousAgentInterface=()=>{
                 </div>
                 <div className="AgentColumn">
                 <span>Balance Locked</span>
-                <span>100$</span>
+                <span>${totalAmount}</span>
                 </div>
                 <div className="AgentColumn">
-                <span >Stop Loss</span>
-                <span>30$</span>
+                <span >Agent Stop Loss</span>
+                <span>${totalstopLoss}</span>
                 </div>
                 <div className="AgentColumnFunds">
                 <button
@@ -121,6 +155,38 @@ export const AutonomousAgentInterface=()=>{
                     type='text'
                     value={`${amount}`}
                     onChange={(e) => setAmount(e.target.value)}
+                    required
+                    placeholder="0.00"
+                  />
+                 </div>
+                </div>
+                <div className="AgentColumnFunds">
+                <div
+                className="AddFundsButton"
+                >Set Stop Loss
+                </div>
+                <div className='Input'>
+                  <input
+                    className='InputField'
+                    type='text'
+                    value={stopLoss}
+                    onChange={(e) => setStopLoss(e.target.value)}
+                    required
+                    placeholder="0.00"
+                  />
+                 </div>
+                </div>
+                <div className="AgentColumnFunds">
+                <div
+                className="AddFundsButton"
+                >Set Profit Level
+                </div>
+                <div className='Input'>
+                  <input
+                    className='InputField'
+                    type='text'
+                    value={profit}
+                    onChange={(e) => setProfit(e.target.value)}
                     required
                     placeholder="0.00"
                   />
