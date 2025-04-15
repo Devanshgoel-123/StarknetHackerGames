@@ -1,10 +1,12 @@
 @import "../../../../app/mixin.scss";
 
-
 $form-bg: #1f2937;
 $text-color: #ffffff;
 $accent: #22c55e;
 $accent-hover: #16a34a;
+$input-bg: #111827;
+$border-color: #374151;
+$active-color: aquamarine;
 
 .form-container {
   border-radius: 10px;
@@ -12,11 +14,12 @@ $accent-hover: #16a34a;
   max-width: 720px;
   margin: 0 auto;
   color: $text-color;
+  
 
   .MuiInputBase-root,
   .MuiSelect-root,
   .MuiOutlinedInput-root {
-    background-color: #111827;
+    background-color: $input-bg;
     color: $text-color;
     border-radius: 6px;
   }
@@ -27,7 +30,7 @@ $accent-hover: #16a34a;
   }
 
   .MuiOutlinedInput-notchedOutline {
-    border-color: #374151;
+    border-color: $border-color;
   }
 
   .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
@@ -36,11 +39,11 @@ $accent-hover: #16a34a;
 
   .MuiMenuItem-root {
     color: #fff;
-    background-color: #111827;
+    background-color: $input-bg;
   }
 
   .MuiMenuItem-root:hover {
-    background-color: #374151;
+    background-color: $border-color;
   }
 
   input,
@@ -58,33 +61,96 @@ $accent-hover: #16a34a;
     flex: 1 1 45%;
     display: flex;
     flex-direction: column;
+    
+    label {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #9ca3af;
+    }
   }
 
   .form-field.full-width {
     flex: 1 1 100%;
   }
+  
+  .wallet-address-field {
+    .input-with-button {
+      display: flex;
+      align-items: center;
+      position: relative;
+      
+      .dark-input {
+        width: 100%;
+        transition: background-color 0.3s ease;
+        
+        &.listening {
+          background-color: rgba(127, 255, 212, 0.08);
+          border: 1px solid rgba(127, 255, 212, 0.3);
+        }
+      }
+      
+      .mic-button {
+        position: absolute;
+        right: 10px;
+        color: #9ca3af;
+        
+        &:hover {
+          color: $active-color;
+        }
+        
+        &.active {
+          color: $active-color;
+          animation: pulse 1.5s infinite;
+        }
+      }
+    }
+  }
 
   .form-actions {
     display: flex;
-    justify-content: center; // Changed from flex-end to center
+    justify-content: center;
     gap: 16px;
     margin-top: 24px;
+    
+    .cancel-btn {
+      border-color: #4b5563;
+      color: #d1d5db;
+      
+      &:hover {
+        border-color: #6b7280;
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+    }
   }
 
   .form-heading {
     font-size: 24px;
     margin-bottom: 24px;
+    color: #f3f4f6;
   }
 
   .submit-btn {
     white-space: nowrap;
-    padding: 6px 12px;       // Smaller padding
+    padding: 6px 16px;
     font-weight: 600;
-    font-size: 12px;         // Smaller font size
+    font-size: 14px;
     background-color: $accent;
+    border-radius: 6px;
 
     &:hover {
       background-color: $accent-hover;
     }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }

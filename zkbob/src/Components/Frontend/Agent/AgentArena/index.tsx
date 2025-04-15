@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect, act } from "react";
 import "./styles.scss";
 import { useRef } from "react";
 import { AiOutlineEnter } from "react-icons/ai";
+import { BsMic, BsMicMute } from "react-icons/bs";
 import { useShallow } from "zustand/react/shallow";
 import axios from "axios";
 import { useAgentStore } from "@/store/agent-store";
@@ -14,6 +15,8 @@ import { FormatDisplayTextForChat } from "@/Utils/function";
 dotenv.config();
 export const AgentArena = () => {
   const chatBoxRef = useRef<HTMLDivElement>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
 
   const { activeChat, 
     activeResponse, 
@@ -31,6 +34,12 @@ export const AgentArena = () => {
       fetching:state.fetching
     }))
   );
+
+  // Check if speech recognition is supported
+  useEffect(() => {
+    const supported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+    setSpeechSupported(supported);
+  }, []);
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -51,13 +60,13 @@ export const AgentArena = () => {
   };
 
   const handleEnterClick = async (value:string) => {
-    if (userInputRef.current?.value) {
+    if (value && value.trim()) {
       useAgentStore.getState().setFetching(true)
-      useAgentStore.getState().setActiveChat(userInputRef.current.value);
+      useAgentStore.getState().setActiveChat(value);
       useAgentStore.getState().setActiveResponse("");
       try {
         const { data } = await axios.post(`${BACKEND_URL}/agent`, {
-          message: userInputRef.current?.value,
+          message: value,
           chatId: chatId,
           agentKey:agentKey
         });
@@ -86,8 +95,74 @@ export const AgentArena = () => {
         });
         console.error("Error processing agent response:", error);
       }
+      
+      if (userInputRef.current) {
+        userInputRef.current.value = "";
+      }
     }
     return;
+  };
+
+  // Speech recognition functions
+  const toggleSpeechRecognition = () => {
+    if (isListening) {
+      stopSpeechRecognition();
+    } else {
+      startSpeechRecognition();
+    }
+  };
+  
+  const startSpeechRecognition = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    
+    const recognition = new (SpeechRecognition as any)();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    
+    let finalTranscript = '';
+    
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+          if (userInputRef.current) {
+            userInputRef.current.value = finalTranscript;
+          }
+        } else {
+          interimTranscript += transcript;
+          if (userInputRef.current) {
+            userInputRef.current.value = interimTranscript;
+          }
+        }
+      }
+    };
+    
+    recognition.onend = () => {
+      setIsListening(false);
+      if (finalTranscript && userInputRef.current && userInputRef.current.value.trim()) {
+        // Automatically send the message when speech recognition ends
+        handleEnterClick(userInputRef.current.value);
+      }
+    };
+    
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+    
+    recognition.start();
+    setIsListening(true);
+  };
+  
+  const stopSpeechRecognition = () => {
+    setIsListening(false);
+    // The recognition will automatically stop due to continuous=false
   };
 
   const renderText = (response: string) => {
@@ -167,8 +242,17 @@ export const AgentArena = () => {
           ref={userInputRef}
           onKeyDown={handleKeyPress}
           placeholder="Ask Anything"
-          className="AgentInput"
+          className={`AgentInput ${isListening ? 'listening' : ''}`}
         />
+        {speechSupported && (
+          <div 
+            className={`MicButton ${isListening ? 'active' : ''}`} 
+            onClick={toggleSpeechRecognition}
+            title={isListening ? "Stop listening" : "Start voice input"}
+          >
+            {isListening ? <BsMicMute /> : <BsMic />}
+          </div>
+        )}
         <div className="EnterButton" onClick={()=>{handleEnterClick(userInputRef.current?.value || "")}}>
           <AiOutlineEnter />
         </div>

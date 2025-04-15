@@ -278,7 +278,7 @@
     }
     .YieldAgentInput {
       display: flex;
-      width: 90%;
+      width: 82%; // Adjusted to make room for mic button
       font-size: 14px;
       height: auto;
       border-radius: 8px;
@@ -289,9 +289,38 @@
       overflow-wrap: break-word;
       word-wrap: break-word;
       white-space: normal;
-      @include md {
+      color: white;
+      
+      &.listening {
+        background-color: rgba(127, 255, 212, 0.08);
+        border: 1px solid rgba(127, 255, 212, 0.3);
+        padding-left: 8px;
+        border-radius: 4px;
       }
     }
+    
+    .MicButton {
+      color: #9ca3af;
+      display: flex;
+      font-size: 20px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: 8px;
+      margin-right: 8px;
+      
+      &:hover {
+        color: aquamarine;
+      }
+      
+      &.active {
+        color: aquamarine;
+        animation: pulse 1.5s infinite;
+      }
+    }
+    
     .EnterButton {
       color: aquamarine;
       display: flex;
@@ -299,7 +328,20 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
 

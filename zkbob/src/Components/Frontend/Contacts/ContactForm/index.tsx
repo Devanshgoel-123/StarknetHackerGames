@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import type React from "react"
 import { Contact } from ".."
-import { Button, TextField as Input, Select, MenuItem } from "@mui/material"
+import { Button, TextField as Input, Select, MenuItem, IconButton, Tooltip } from "@mui/material"
+import { BsMic, BsMicMute } from "react-icons/bs"
 import "./styles.scss";
 
 interface ContactFormProps {
@@ -15,6 +16,15 @@ interface ContactFormProps {
 export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProps) {
   const [name, setName] = useState(initialData?.name || "")
   const [walletAddress, setWalletAddress] = useState(initialData?.walletAddress || "")
+  const [isListening, setIsListening] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const walletInputRef = useRef<HTMLInputElement>(null)
+
+  // Check if speech recognition is supported
+  useEffect(() => {
+    const supported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+    setSpeechSupported(supported);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,6 +37,61 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
 
     onSubmit(contactData as Contact)
   }
+
+  // Speech recognition functions
+  const toggleSpeechRecognition = () => {
+    if (isListening) {
+      stopSpeechRecognition();
+    } else {
+      startSpeechRecognition();
+    }
+  };
+  
+  const startSpeechRecognition = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    
+    const recognition = new (SpeechRecognition as any)();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    
+    let finalTranscript = '';
+    
+    recognition.onresult = (event: any) => {
+      let interimTranscript = '';
+      
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+          // Remove spaces and format as wallet address
+          const formattedAddress = finalTranscript.replace(/\s+/g, '');
+          setWalletAddress(formattedAddress);
+        } else {
+          interimTranscript += transcript;
+          setWalletAddress(interimTranscript);
+        }
+      }
+    };
+    
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+    
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+    
+    recognition.start();
+    setIsListening(true);
+  };
+  
+  const stopSpeechRecognition = () => {
+    setIsListening(false);
+  };
 
   return (
     <div className="form-container">
@@ -43,6 +108,7 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
             variant="outlined"
             required
             fullWidth
+            className="dark-input"
           />
         </div>
 
@@ -52,28 +118,45 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
             id="chain"
             value={"starknet"}
             fullWidth
+            className="dark-select"
           >
             <MenuItem value="starknet">Starknet</MenuItem>
           </Select>
         </div>
 
-        <div className="form-field full-width">
+        <div className="form-field full-width wallet-address-field">
           <label htmlFor="walletAddress">Wallet Address</label>
-          <Input
-            id="walletAddress"
-            value={walletAddress}
-            onChange={(e) => setWalletAddress(e.target.value)}
-            placeholder="Enter wallet address"
-            variant="outlined"
-            required
-            fullWidth
-          />
+          <div className="input-with-button">
+            <Input
+              id="walletAddress"
+              value={walletAddress}
+              onChange={(e) => setWalletAddress(e.target.value)}
+              placeholder="Enter wallet address"
+              variant="outlined"
+              required
+              fullWidth
+              className={`dark-input ${isListening ? 'listening' : ''}`}
+              inputRef={walletInputRef}
+            />
+            {speechSupported && (
+              <Tooltip title={isListening ? "Stop dictating" : "Dictate wallet address"}>
+                <IconButton 
+                  onClick={toggleSpeechRecognition}
+                  className={`mic-button ${isListening ? 'active' : ''}`}
+                  size="small"
+                >
+                  {isListening ? <BsMicMute /> : <BsMic />}
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
         </div>
+        
         <div className="form-actions">
-          <Button variant="outlined" onClick={onCancel}>
+          <Button variant="outlined" onClick={onCancel} className="cancel-btn">
             Cancel
           </Button>
-          <Button type="submit" variant="contained" className="submit-btn" size="small">
+          <Button type="submit" variant="contained" className="submit-btn">
             {initialData ? "Save Changes" : "Add Contact"}
           </Button>
         </div>
