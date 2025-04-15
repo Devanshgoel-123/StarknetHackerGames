@@ -8,15 +8,25 @@ export interface SupabaseToken {
     image:string;
 }
 
-// Define interfaces
-export interface ExchangeRate {
-    exchange: string;
-    baseCurrency: string;
-    quoteCurrency: string;
-    rate: number;
-    timestamp: number;
+// // Define interfaces
+// export interface ExchangeRate {
+//     exchange: string;
+//     baseCurrency: string;
+//     quoteCurrency: string;
+//     rate: number;
+//     timestamp: number;
+//   }
+
+  export interface DepositWithdrawPool{
+    tokenName:string;
+    protocol:string;
+    contractAddress:string;
+    feature1:string;
+    feature2:string;
+    tokenImage:string;
+    protocolImage:string;
   }
-  
+
 export interface ArbitrageOpportunity {
     path: string[];
     exchanges: string[];
@@ -66,6 +76,7 @@ export interface TokenForPortfolio{
 	image:string;
 	type:string;
 	address:string;
+  priceUsd:string;
 }
 
 

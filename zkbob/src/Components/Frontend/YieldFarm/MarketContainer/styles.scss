@@ -1,100 +1,229 @@
 .deposit-form {
-  font-family: "Manrope";
+  font-family: "Manrope", sans-serif;
   background: #1a1a1a;
-  border-radius: 8px;
+  border-radius: 12px;
   color: #fff;
   width: 100%;
   height: fit-content;
-  text-align: center;
-  padding: 0.5rem;
-  padding-bottom: 0.25rem;
-  border: 2px solid var(--border-color);
-
-  .market-data-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-
-    .market-data {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+  padding: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #2c2c2c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #3d3d3d;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  }
+  
+  &.enhanced {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #ffb400, #ff9800);
     }
   }
 
   .header {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 2px;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #2c2c2c;
+    .market-cap{
+      font-family: "Manrope";
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+      font-size: 18px;
+      .protocolImage{
+        border-radius: 12px;
+      }
+    }
+    .pool-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      .pool-icon {
+        font-size: 1.4rem;
+      }
+      
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        color: #fff;
+      }
+    }
+    
+    .user-position {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #999;
+      
+      .position-icon {
+        color: #ffb400;
+        font-size: 1.2rem;
+      }
+      
+      .position-label {
+        color: #999;
+      }
+      
+      .position-value {
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+
+  .market-data-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: #232323;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    
+    .market-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      .market-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+        
+        &.borrow {
+          color: #ff5555;
+        }
+        
+        &.supply {
+          color: #7bf178;
+        }
+        
+        &.price {
+          color: #ffb400;
+        }
+      }
+      
+      .market-data-label {
+        font-size: 0.8rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+      }
+      
+      .market-data-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        
+        &.borrow {
+          color: #ff5555;
+        }
+        
+        &.supply {
+          color: #7bf178;
+        }
+      }
+    }
   }
 
   .form-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 0.3rem; // Reduced gap
-    height: 2rem; // Reduced height
-    justify-content: space-evenly;
-    margin-bottom: 0.2rem;
-
+    display:flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 12px 10px;
+    .input-wrapper {
+      position: relative;
+      
+      &::before {
+        content: '$';
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 1rem;
+      }
+    }
+    
     .amount-input {
-      background-color: #222222;
-      margin: 0;
-      padding-inline: 0.7rem; // Reduced padding
+      width: 35%;
+      outline: none;
+      background: #232323;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 1rem;
+      padding: 0.75rem;
+      padding-left: 1.75rem;
+      transition: border-color 0.3s ease;
+      
+      &:focus {
+        border-color: #ffb400;
+      }
+      
+      &::placeholder {
+        color: #666;
+      }
     }
 
-    .stake-btn,
-    .unstake-btn {
+    button {
+      border: none;
       border-radius: 8px;
-      padding: 0.4rem 0.8rem; // Reduced padding
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
       cursor: pointer;
-      color: #fff;
-      font-size: 0.9rem; // Slightly smaller text
-      transition: 0.3s;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     }
 
     .stake-btn {
       background: #7bf178;
-      color: black;
-      &:hover {
+      color: #121212;
+      padding: 10px;
+      &:hover:not(:disabled) {
         background: #53e751;
+        transform: translateY(-2px);
+      }
+      
+      &:active:not(:disabled) {
+        transform: translateY(0);
       }
     }
 
     .unstake-btn {
-      background: #e73232;
-      color: black;
-      &:hover {
-        background: #ff3333;
-      }
-    }
-
-    input {
-      outline: none;
-      background: #111;
+      background: #cd7228;
       color: #fff;
-      border-radius: 4px;
-      text-align: left;
-      margin-bottom: 0.5rem; // Reduced margin
-      font-size: 0.9rem;
-      padding: 0.4rem;
-    }
-
-    .preview-btn {
-      background: #32cd32;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      font-size: 0.9rem;
-      border-radius: 4px;
-      cursor: pointer;
-      padding: 0.4rem 0.8rem;
-      transition: 0.3s;
-
-      &:hover {
-        background: #28a428;
+      padding: 10px;
+      &:hover:not(:disabled) {
+        background: #ff3333;
+        transform: translateY(-2px);
+      }
+      
+      &:active:not(:disabled) {
+        transform: translateY(0);
       }
     }
   }
@@ -103,32 +232,48 @@
 // Mobile styles
 @media (max-width: 600px) {
   .deposit-form {
-    padding: 1rem; // Reduced padding
-
-    .header {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .market-data-container {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px; // Reduced gap
-    }
-
-    .form-container {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-
-      .stake-options {
+    padding: 1rem;
+    
+    &.mobile {
+      .header {
         flex-direction: column;
-        gap: 6px;
-
-        .stake-btn,
-        .unstake-btn {
+        align-items: flex-start;
+        gap: 0.75rem;
+        
+        .user-position {
           width: 100%;
+          justify-content: flex-start;
+        }
+      }
+
+      .market-data-container {
+        flex-direction: column;
+        gap: 1rem;
+        .market-data {
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+          border-bottom: 1px solid #333;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .market-icon {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .form-container {
+        grid-template-columns: 1fr;
+        
+        .input-wrapper {
+          margin-bottom: 0.5rem;
+        }
+        
+        button {
+          height: 3rem;
         }
       }
     }

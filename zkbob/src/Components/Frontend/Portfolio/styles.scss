@@ -257,7 +257,12 @@ $transition-duration: 200ms;
 
       .portfolio-token-balance {
        font-size: 10px;
-        color: $gray-text;
+       display: flex;
+       flex-direction: row;
+       color: $gray-text;
+        :nth-child(1){
+          margin-right: 5px;
+        }
         @include md{
           font-size: 12px;
         }

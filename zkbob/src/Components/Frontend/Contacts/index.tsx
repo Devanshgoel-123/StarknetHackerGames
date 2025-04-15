@@ -1,49 +1,48 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContactsList } from "./ContactsList"
 import { ContactForm } from "./ContactForm"
 import { SearchBar } from "./SearchBar"
 import { PlusCircle } from "lucide-react"
-import { Button } from "@mui/material";
+import axios from "axios";
 import "./styles.scss";
+import { BACKEND_URL } from "@/Components/Backend/Common/Constants"
+import { useShallow } from "zustand/react/shallow"
+import { useAgentStore } from "@/store/agent-store"
 export interface Contact {
-    id: string
-    name: string
-    walletAddress: string
-    tags: string[]
-    chain: string
+    id: string;
+    name: string;
+    walletAddress: string;
+    userId:string;
   }
   
 
 
 export function ContactWrapper() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [showAddContact, setShowAddContact] = useState(false)
-  const [contacts, setContacts] = useState<Contact[]>([
-    {
-      id: "1",
-      name: "Zoro",
-      walletAddress: "0xabc123def456789abcdef123456789abcdef1234",
-      tags: ["friend", "aptos"],
-      chain: "aptos",
-    },
-    {
-      id: "2",
-      name: "Luffy",
-      walletAddress: "0x9876543210abcdef9876543210abcdef98765432",
-      tags: ["developer", "ethereum"],
-      chain: "ethereum",
-    },
-    {
-      id: "3",
-      name: "Nami",
-      walletAddress: "0x5432109876abcdef5432109876abcdef54321098",
-      tags: ["frequent sender", "solana"],
-      chain: "solana",
-    },
-  ])
+  const [showAddContact, setShowAddContact] = useState(false);
+  const {
+    agentWalletAddress
+  }=useAgentStore(useShallow((state)=>({
+    agentWalletAddress:state.agentWalletAddress
+  })))
+  const [contacts, setContacts] = useState<Contact[]>([])
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+
+  useEffect(()=>{
+    const fetchUserContacts=async ()=>{
+      const result=await axios.get(`${BACKEND_URL}/userContact/contacts`,{
+        params:{
+          userAddress:agentWalletAddress
+        }
+      }) 
+      console.log(result.data)
+      const contacts=result.data.result
+      setContacts(contacts)
+    }
+    fetchUserContacts();
+  },[])
 
   const handleAddContact = (contact: Omit<Contact, "id">) => {
     const newContact = {
@@ -67,7 +66,6 @@ export function ContactWrapper() {
     const searchLower = searchQuery.toLowerCase()
     return (
       contact.name.toLowerCase().includes(searchLower) ||
-      contact.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
       contact.walletAddress.toLowerCase().includes(searchLower)
     )
   })

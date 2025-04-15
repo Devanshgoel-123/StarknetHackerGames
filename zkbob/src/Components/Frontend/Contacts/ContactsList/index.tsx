@@ -19,8 +19,7 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
   const copyToClipboard = (text: string, contactId: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(contactId);
-    
-    // Reset the copied status after 2 seconds
+  
     setTimeout(() => {
       setCopiedId(null);
     }, 2000);
@@ -28,19 +27,6 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
   
   const truncateAddress = (address: string) => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-  }
-  
-  const getChainInfo = (chain: string) => {
-    switch (chain.toLowerCase()) {
-      case "ethereum":
-        return { icon: "🔷", className: "chain-ethereum" };
-      case "aptos":
-        return { icon: "🔵", className: "chain-aptos" };
-      case "solana":
-        return { icon: "🟣", className: "chain-solana" };
-      default:
-        return { icon: "🔗", className: "chain-default" };
-    }
   }
   
   if (contacts.length === 0) {
@@ -55,7 +41,6 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
   return (
     <div className="contacts-grid">
       {contacts.map((contact) => {
-        const chainInfo = getChainInfo(contact.chain);
         const isCopied = copiedId === contact.id;
         
         return (
@@ -63,7 +48,7 @@ export function ContactsList({ contacts, onEdit, onDelete }: ContactsListProps) 
             <CardContent className="contact-card-content">
               <div className="contact-header">
                 <div className="contact-name-section">
-                  <Badge className={`chain-badge ${chainInfo.className}`}>
+                  <Badge className={`chain-badge`}>
                     <Image src={"https://assets.coingecko.com/coins/images/26433/small/starknet.png"} height={30} width={30} alt="Strklogo"/>
                   </Badge>
                   <h3 className="contact-name">{contact.name}</h3>

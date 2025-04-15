@@ -7,9 +7,6 @@ import { formatDisplayText } from "@/Utils/function";
 import "./styles.scss";
 import axios from "axios"
 import { CoinGeckoId } from "@/Components/Backend/Types";
-import { useAgentStore } from "@/store/agent-store";
-import { useShallow } from "zustand/react/shallow";
-import { CustomTextLoader } from "@/Components/Backend/Common/CustomTextLoader";
 import { CustomSpinner } from "@/Components/Backend/Common/CustomSpinner";
 import { useMediaQuery } from "@mui/material";
 import { BACKEND_URL } from "@/Components/Backend/Common/Constants";

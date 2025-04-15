@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import MarketContainer from "./MarketContainer";
 import { AgentArena } from "./AgentArena";
 import axios from "axios";
-
+import { useMemo } from "react";
+import { DepositWithdrawPool } from "@/Components/Backend/Types";
 import {
   Select,
   MenuItem,
@@ -20,63 +21,9 @@ import { BACKEND_URL } from "@/Components/Backend/Common/Constants";
 import { CustomSpinner } from "@/Components/Backend/Common/CustomSpinner";
 import { useShallow } from "zustand/react/shallow";
 
-export type EchelonUserData = {
-  market: string;
-  coin: string;
-  supply: number;
-  supplyApr: number;
-  borrowApr: number;
-  coinPrice: number;
-};
-
-export type EchelonMarketData = {
-  market: string;
-  coin: string;
-  supply: number;
-  supplyApr: number;
-  borrowApr: number;
-  coinPrice: number;
-};
-
-
-export type PositionData = {
-  key: string;
-  value: {
-    borrow_positions: { data: { key: string; value: string }[] };
-    lend_positions: { data: { key: string; value: string }[] };
-    position_name: string;
-  };
-};
-
-export type jouleMarketData = {
-  coin: string;
-  supply: number;
-  supplyApr: number;
-  borrowApr: number;
-  coinPrice: number;
-  type: string;
-};
-
-export type JouleUserData = {
-  userPositions: {
-    positions_map: {
-      data: PositionData[];
-    };
-    user_position_ids: string[];
-  }[];
-};
-
-export type DataType = {
-  echelonUserData: EchelonUserData[];
-  echelonMarketData: EchelonMarketData[];
-  jouleUserData: JouleUserData;
-  jouleMarketData:jouleMarketData[];
-};
-
 const YieldFarm = () => {
   const [protocol, setProtocol] = useState("All");
-  const [data, setData] = useState<DataType | null>(null);
-
+  const [data, setData] = useState<DepositWithdrawPool[]| null>(null);
   const [loading, setLoading] = useState(true);
   const {
     agentWalletAddress
@@ -103,16 +50,14 @@ const YieldFarm = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${BACKEND_URL}/getUserPoolData`,{
+        const response = await axios.get(`${BACKEND_URL}/depositWithdraw/pools`,{
           params:{
             agentWalletAddress:agentWalletAddress
           }
         });
-        const responseData: DataType = response.data;
-        responseData.echelonMarketData.sort((a, b) => b.supply - a.supply);
-        responseData.jouleMarketData.sort((a, b) => b.supply - a.supply);
-        setData(response.data);
-        console.log(response.data);
+        const responseData: DepositWithdrawPool[]= response.data.data;
+        setData(responseData);
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -121,30 +66,27 @@ const YieldFarm = () => {
     };
 
     fetchData();
-  }, []);
+  }, [agentWalletAddress]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setProtocol(event.target.value);
   };
 
   const MobileDevice = useMediaQuery("(max-width:640px)");
-  let filteredData: (EchelonMarketData | jouleMarketData)[] = [];
 
-  data?.jouleMarketData.forEach((item) => {
-    item.borrowApr /= 100;
-    item.supplyApr /= 100;
-  });
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+    console.log("The data is",data)
   if (protocol === "All") {
-    filteredData = [
-      ...(data?.echelonMarketData ?? []),
-      ...(data?.jouleMarketData ?? []),
-    ];
-    filteredData.sort((a, b) => b.supply - a.supply);
-  } else if (protocol === "Echelon") {
-    filteredData = data?.echelonMarketData ?? [];
-  } else if (protocol === "Joule") {
-    filteredData = data?.jouleMarketData ?? [];
+    return data;
+  } else if (protocol === "StrkFarm") {
+    return data.filter((item) => item.protocol === "StrkFarm");
+  } else if (protocol === "EndurFi") {
+    return data.filter((item) => item.protocol === "EndurFi"); // Note: "EndurFi" vs "Endurfi" — ensure case matches backend!
   }
+  return [];
+  }, [data, protocol]);
+ 
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -202,8 +144,8 @@ const YieldFarm = () => {
             >
               {[
                 { label: "All", value: "All" },
-                { label: "Joule Finance", value: "Joule" },
-                { label: "Echelon", value: "Echelon" },
+                { label: "EndurFi", value: "EndurFi" },
+                { label: "StrkFarm", value: "StrkFarm" },
               ].map((item) => (
                 <MenuItem
                   key={item.value}
@@ -218,16 +160,13 @@ const YieldFarm = () => {
               ))}
             </Select>
           </FormControl>
-
-          {/* Show loading or filtered MarketContainers */}
-          {/* Show loading or filtered MarketContainers */}
           {loading ? (
             <div className="spinner-container">
               <CustomSpinner size="60" color="#ffb400" />
             </div>
           ) : filteredData.length > 0 ? (
             filteredData.map((item, index) => (
-              <MarketContainer key={index} data={item} protcol={protocol}/>
+              <MarketContainer key={index} data={item} />
             ))
           ) : (
             <p>No data available</p>

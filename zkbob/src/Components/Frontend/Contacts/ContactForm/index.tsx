@@ -15,9 +15,6 @@ interface ContactFormProps {
 export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProps) {
   const [name, setName] = useState(initialData?.name || "")
   const [walletAddress, setWalletAddress] = useState(initialData?.walletAddress || "")
-  const [tagInput, setTagInput] = useState("")
-  const [tags, setTags] = useState<string[]>(initialData?.tags || [])
-  const [chain, setChain] = useState(initialData?.chain || "ethereum")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,8 +23,6 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
       ...(initialData?.id ? { id: initialData.id } : {}),
       name,
       walletAddress,
-      tags,
-      chain,
     }
 
     onSubmit(contactData as Contact)
@@ -55,8 +50,7 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
           <label htmlFor="chain">Chain</label>
           <Select
             id="chain"
-            value={chain}
-            onChange={(e) => setChain(e.target.value)}
+            value={"starknet"}
             fullWidth
           >
             <MenuItem value="ethereum">Ethereum</MenuItem>

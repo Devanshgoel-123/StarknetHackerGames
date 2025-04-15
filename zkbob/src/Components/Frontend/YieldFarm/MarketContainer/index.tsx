@@ -1,51 +1,53 @@
 import { useMediaQuery } from "@mui/material";
 import "./styles.scss";
-import React, { useState } from "react";
-import { EchelonMarketData, jouleMarketData } from "..";
+import React, { use, useState } from "react";
 import axios from "axios";
+import { DepositWithdrawPool } from "@/Components/Backend/Types";
 import { BACKEND_URL } from "@/Components/Backend/Common/Constants";
 import { useAgentStore } from "@/store/agent-store";
+import Image from "next/image";
+import { useShallow } from "zustand/react/shallow";
 type MarketContainerProps = {
-  data: EchelonMarketData | jouleMarketData;
-  protcol:string;
+  data: DepositWithdrawPool;
 }
 
-const MarketContainer: React.FC<MarketContainerProps> = ({ data,protcol}:MarketContainerProps) => {
+const MarketContainer: React.FC<MarketContainerProps> = ({ data}:MarketContainerProps) => {
   const [amount, setAmount] = useState<number>(0.00);
-  const MobileDevice = useMediaQuery("(max-width:600px)");
-  const parts = data.coin.split("::");
-  const result = parts[parts.length - 1];
-   
+  const MobileDevice = useMediaQuery("(max-width:600px)");   
 
+
+  const {
+    agentWalletAddress
+  }=useAgentStore(useShallow((state)=>({
+    agentWalletAddress:state.agentWalletAddress
+  })))
   const handleEnterClick=async (value:string)=>{
     try{
      if(amount>0){
-      console.log(`I want to ${value} ${amount} ${result} on the ${protcol}`)
-      useAgentStore.getState().setActiveYieldChat(`I want to ${value} ${amount} ${result} on the ${protcol}`)
-      const response=await axios.post(`${BACKEND_URL}/lendBorrowPost`,{
-        message:`I want to ${value} ${amount} ${result} on the ${protcol}`
+      console.log(`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`)
+      useAgentStore.getState().setActiveYieldChat(`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`)
+      const response=await axios.post(`${BACKEND_URL}/depositWithdraw/agent`,{
+        messages:[{
+         role:"user",
+        content:`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`
+        }],
+        address:agentWalletAddress
       })
+      console.log(response.data)
       useAgentStore.getState().setActiveYieldResponse({
-        analysis:response.data.data
+        analysis:response.data.message.finalResponse
       })
       useAgentStore.getState().setYieldChats({
-        query:`I want to ${value} ${amount} ${result} on the ${protcol}`,
+        query:`I want to ${value} ${amount} ${data.tokenName} on the ${data.protocol}`,
         response:{
-          analysis:response.data.data
+          analysis:response.data.message.finalResponse
         }
       })
-      }
+    }
     }catch(err){
       useAgentStore.getState().setActiveYieldResponse({
         analysis: "Sorry We couldn't process your request at the moment",
         recommendedAction: "",
-      });
-      useAgentStore.getState().setYieldChats({
-        query: `I want to ${value} ${amount} ${result} on the ${protcol}`,
-        response: {
-          analysis: "Sorry We couldn't process your request at the moment",
-          recommendedAction: "",
-        },
       });
       console.log(err)
     }
@@ -54,19 +56,26 @@ const MarketContainer: React.FC<MarketContainerProps> = ({ data,protcol}:MarketC
   return (
     <div className={`deposit-form ${MobileDevice ? "mobile" : ""}`}>
       <div className="header">
-        <h2>{result}</h2>
-        <span className="market-cap">User Position: {data.supply}</span>
+        <span className="market-cap">
+           <Image src={data.protocolImage} height={30} width={30} alt="protocolImage" className="protocolImage"/>
+           <span >{data.protocol}</span>
+        </span>
+        <span className="market-cap">
+        <Image src={data.tokenImage} height={30} width={30} alt="protocolImage" className="protocolImage"/>
+          {data.tokenName}
+          </span>
+
       </div>
 
-      <div className={`market-data-container ${MobileDevice ? "mobile" : ""}`}>
+      {/* <div className={`market-data-container ${MobileDevice ? "mobile" : ""}`}>
         <div className="market-data">
-          <span className="market-data-label">Borrow APR</span>
+          <span className="market-data-label">Deposit APR</span>
           <span className="market-data-value">
             {(data.borrowApr * 100).toFixed(2)} %
           </span>
         </div>
         <div className="market-data">
-          <span className="market-data-label">Supply APR</span>
+          <span className="market-data-label">Withdraw APR</span>
           <span className="market-data-value">
             {(data.supplyApr * 100).toFixed(2)} %
           </span>
@@ -77,7 +86,7 @@ const MarketContainer: React.FC<MarketContainerProps> = ({ data,protcol}:MarketC
             ${data.coinPrice.toFixed(4)}
           </span>
         </div>
-      </div>
+      </div> */}
 
       <div className="form-container">
         <input
@@ -92,8 +101,8 @@ const MarketContainer: React.FC<MarketContainerProps> = ({ data,protcol}:MarketC
           }}
           className="amount-input"
         />
-        <button className="stake-btn" onClick={()=>{handleEnterClick("lend")}}>Lend</button>
-        <button className="unstake-btn" onClick={()=>{handleEnterClick("borrow")}}>Borrow</button>
+        <button className="stake-btn" onClick={()=>{handleEnterClick("deposit")}}>Deposit</button>
+        <button className="unstake-btn" onClick={()=>{handleEnterClick("withdraw")}}>Withdraw</button>
       </div>
     </div>
   );

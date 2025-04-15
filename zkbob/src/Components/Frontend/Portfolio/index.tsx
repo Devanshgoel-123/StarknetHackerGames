@@ -44,7 +44,7 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
         console.log(response.data)
         const Tokens:TokenForPortfolio[]=response.data.userPortfolio.tokens;
         console.log(Tokens)
-        const stableTokens=Tokens.filter((item)=>item.type==="stablecoin");
+        const stableTokens=Tokens.filter((item)=>item.type==="stable");
         const nativeTokens=Tokens.filter((item)=>item.type==="native");
         const otherTokens=Tokens.filter((item)=>item.type==="other");
         const stableSum = stableTokens.reduce((sum, token) => sum + Number(token.valueUsd), 0);
@@ -138,7 +138,9 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
               <div>
                 <div className="portfolio-token-name">{token.name.toUpperCase()}</div>
                 <div className="portfolio-token-balance">
-                  {(Number(token.balance) / Math.pow(10, Number(token.decimals))).toFixed(4)} {token.name.toUpperCase()}
+                  {/* {(Number(token.balance) / Math.pow(10, Number(token.decimals))).toFixed(4)}  */}
+                  <span>{token.balance.slice(0,6)}</span>
+                  <span>{token.name.toUpperCase().slice(0,1)+token.name.toLowerCase().slice(1)}</span>
                 </div>
               </div>
             </div>
@@ -147,7 +149,7 @@ const MobileDevice= useMediaQuery("(max-width:600px)");
               <div
                 className={`portfolio-token-change`}
               >
-               ${parseFloat(token.valueUsd).toFixed(4)}
+               ${parseFloat(token.priceUsd).toFixed(4)}
               </div>
             </div>
           </div>
