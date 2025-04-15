@@ -59,11 +59,7 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
             onChange={(e) => setChain(e.target.value)}
             fullWidth
           >
-            <MenuItem value="ethereum">Ethereum</MenuItem>
-            <MenuItem value="aptos">Aptos</MenuItem>
-            <MenuItem value="solana">Solana</MenuItem>
-            <MenuItem value="polygon">Polygon</MenuItem>
-            <MenuItem value="binance">Binance Smart Chain</MenuItem>
+            <MenuItem value="starknet">Starknet</MenuItem>
           </Select>
         </div>
 
@@ -83,7 +79,7 @@ export function ContactForm({ onSubmit, onCancel, initialData }: ContactFormProp
           <Button variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit" variant="contained" className="submit-btn">
+          <Button type="submit" variant="contained" className="submit-btn" size="small">
             {initialData ? "Save Changes" : "Add Contact"}
           </Button>
         </div>

@@ -1,51 +1,91 @@
 @import "../../../../app/mixin.scss";
+
+
+$form-bg: #1f2937;
+$text-color: #ffffff;
+$accent: #22c55e;
+$accent-hover: #16a34a;
+
 .form-container {
-    background-color: #1f2937; /* dark background */
-    border-radius: 10px;
-    padding: 32px;
-    max-width: 720px;
-    margin: 0 auto;
-    color: white;
+  background-color: $form-bg;
+  border-radius: 10px;
+  padding: 32px;
+  max-width: 720px;
+  margin: 0 auto;
+  color: $text-color;
+
+  .MuiInputBase-root,
+  .MuiSelect-root,
+  .MuiOutlinedInput-root {
+    background-color: #111827;
+    color: $text-color;
+    border-radius: 6px;
   }
-  
-  .form-heading {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-    text-align: center;
+
+  .MuiInputLabel-root,
+  .MuiFormLabel-root {
+    color: lighten($text-color, 30%);
   }
-  
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #374151;
+  }
+
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: $accent;
+  }
+
+  .MuiMenuItem-root {
+    color: #fff;
+    background-color: #111827;
+  }
+
+  .MuiMenuItem-root:hover {
+    background-color: #374151;
+  }
+
+  input,
+  textarea {
+    color: $text-color;
+  }
+
   .form-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 20px;
   }
-  
+
   .form-field {
+    flex: 1 1 45%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    flex: 1;
-    min-width: 250px;
   }
-  
+
   .form-field.full-width {
     flex: 1 1 100%;
   }
-  
+
   .form-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; // Changed from flex-end to center
     gap: 16px;
     margin-top: 24px;
-    width: 100%;
   }
-  
+
+  .form-heading {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
   .submit-btn {
-    background-color: #22c55e !important; /* green-500 */
+    white-space: nowrap;
+    padding: 6px 12px;       // Smaller padding
+    font-weight: 600;
+    font-size: 12px;         // Smaller font size
+    background-color: $accent;
+
+    &:hover {
+      background-color: $accent-hover;
+    }
   }
-  
-  .submit-btn:hover {
-    background-color: #16a34a !important; /* green-600 */
-  }
-  
+}
