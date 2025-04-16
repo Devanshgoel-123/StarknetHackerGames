@@ -6,8 +6,8 @@ export const ACCOUNT_ADDRESS =
 
 export const DAPP_LOGO =
   "https://media-hosting.imagekit.io//d90e8f22145b401f/AgentLogo.jpg?Expires=1837107676&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Q3pK1cJZ03D5-7-Ctzpk6ce8kQnNgX6iEhA039Gwkt2AB8I1QEBcc1HjO7uVmK6deTqOp-QYWb4-nwLNgbCcqrekpUDunBPrV67icunZRDwTLJX4dJpHzBSwkfAvIRQSTx8TQ6inx0IMbknz-lk9Togq6d~dEt13mT7d~qWJY2p~urnAuYh0Gbp9IPz8CrbVMJWoNluAQrpQTO6hBdtiJ2s9kGFWXXUsF0huedX9rLbNpzllTK3hGCAkK3lznwmEqWUzvvEjpssCWfDgL8O6v92MGaZdPiZpqRGgcSV41vxsZssFmKkCRtvSHDoyTUSuGXJQNMxwlIRQwXUzhymaKg__";
-//export const BACKEND_URL ="https://hackergames-backend.onrender.com"
- export const BACKEND_URL="http://localhost:3002"
+export const BACKEND_URL ="https://hackergames-backend.onrender.com"
+// export const BACKEND_URL="http://localhost:3002"
 
 
 export const AGENT_CONTRACT_ADDRESS="0x00077ce068f5597e56bbb601bd0d906b040f3a7007ec6fd2db3c8a25368af4b5"
