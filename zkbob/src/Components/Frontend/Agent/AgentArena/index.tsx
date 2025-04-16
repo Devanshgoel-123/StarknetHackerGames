@@ -22,8 +22,8 @@ export const AgentArena = () => {
     activeResponse, 
     agentResponses, 
     chatId ,
-    agentKey,
-    fetching
+    fetching,
+    agentWalletAddress
   } = useAgentStore(
     useShallow((state) => ({
       activeChat: state.activeChat,
@@ -31,7 +31,8 @@ export const AgentArena = () => {
       agentResponses: state.agentResponses,
       chatId: state.activeChatId,
       agentKey:state.agentKey,
-      fetching:state.fetching
+      fetching:state.fetching,
+      agentWalletAddress:state.agentWalletAddress
     }))
   );
 
@@ -65,13 +66,14 @@ export const AgentArena = () => {
       useAgentStore.getState().setActiveChat(value);
       useAgentStore.getState().setActiveResponse("");
       try {
-        const { data } = await axios.post(`${BACKEND_URL}/agent`, {
-          message: value,
-          chatId: chatId,
-          agentKey:agentKey
+        const data = await axios.post(`${BACKEND_URL}/agent`, {
+          messages:[{
+            role:"user",
+           content:`${userInputRef.current?.value}`
+           }],
+           address:agentWalletAddress
         });
-        const response: string = data.data.agentResponse;
-       
+        const response: string = data.data.message.finalResponse;
         useAgentStore.getState().setActiveResponse(response);
         useAgentStore.getState().setAgentResponses({
           query: value,

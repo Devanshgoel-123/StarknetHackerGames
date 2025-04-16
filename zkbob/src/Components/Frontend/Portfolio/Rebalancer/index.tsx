@@ -40,7 +40,7 @@ export const PortfolioRebalancer: React.FC<Props> = ({
   const isXlDevice = useMediaQuery("(min-width: 1020px) and (max-width: 1279px)")
   const mobileDevide=useMediaQuery("(max-width: 600px)");
 
-  const agentWalletAddress=useAgentStore(useShallow((state)=>({
+  const {agentWalletAddress}=useAgentStore(useShallow((state)=>({
     agentWalletAddress:state.agentWalletAddress
   })))
 
