@@ -97,18 +97,18 @@ export const AutonomousAgentInterface=()=>{
        const amountInWei = BigInt(Math.floor(parsedAmount * 1e18));
        const amountUint256 = uint256.bnToUint256(amountInWei);
        try {
-        // const tx = await account.execute([
-        //     {
-        //         contractAddress: strkAddress,
-        //         entrypoint: "transfer",
-        //         calldata: [
-        //             AGENT_CONTRACT_ADDRESS,
-        //             amountUint256.low.toString(),
-        //             amountUint256.high.toString()
-        //         ]
-        //     }
-        // ]);
-        // console.log("TX hash:", tx.transaction_hash);
+        const tx = await account.execute([
+            {
+                contractAddress: strkAddress,
+                entrypoint: "transfer",
+                calldata: [
+                    AGENT_CONTRACT_ADDRESS,
+                    amountUint256.low.toString(),
+                    amountUint256.high.toString()
+                ]
+            }
+        ]);
+        console.log("TX hash:", tx.transaction_hash);
         const result=await axios.post(`${BACKEND_URL}/autonomous/createDeposit`,{
             agentWallet:AGENT_CONTRACT_ADDRESS, 
             userWallet:userWalletAddress, 

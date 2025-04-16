@@ -33,14 +33,14 @@ export const AgentArena = () => {
   
   const ButtonContent: Props[] = [
     {
-      heading: "Analyse Portfolio",
-      content: "Conduct An In Depth Analysis of my portfolio",
-      query: "Conduct An In Depth Analysis of my portfolio",
+      heading: "Withdraw Token",
+      content: "Withdraw tokens from StrkFarm",
+      query: "Withdraw tokens from StrkFarm",
     },
     {
-      heading: "Lend Token",
-      content: "Lend token on Joule Finance and Echelon Markets",
-      query: "Give me the details to lend token on joule Finance",
+      heading: "Deposit Token",
+      content: "Deposit token on EndfuFi",
+      query: "Give me the details to deposit token on EnduFi",
     },
   ];
   
@@ -101,7 +101,7 @@ export const AgentArena = () => {
         const response=await axios.post(`${BACKEND_URL}/depositWithdraw/agent`,{
           messages:[{
            role:"user",
-          content:`userInputRef.current?.value`
+          content:`${userInputRef.current?.value}`
           }],
           address:agentWalletAddress
         })

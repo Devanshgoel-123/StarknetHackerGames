@@ -7,6 +7,7 @@ import axios from "axios";
 import { useAgentStore } from "@/store/agent-store";
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
 import { BACKEND_URL } from "@/Components/Backend/Common/Constants";
+import { useShallow } from "zustand/react/shallow";
 interface CategoryAllocation {
   name: string;
   color: string;
@@ -37,7 +38,12 @@ export const PortfolioRebalancer: React.FC<Props> = ({
 }) => {
   const isXxlDevice=useMediaQuery("(min-width: 1300px)");
   const isXlDevice = useMediaQuery("(min-width: 1020px) and (max-width: 1279px)")
-  const mobileDevide=useMediaQuery("(max-width: 600px)")
+  const mobileDevide=useMediaQuery("(max-width: 600px)");
+
+  const agentWalletAddress=useAgentStore(useShallow((state)=>({
+    agentWalletAddress:state.agentWalletAddress
+  })))
+
   const calculateCategoryValues = (tokenList: TokenForPortfolio[]) => {
     const categoryValues = {
       stable: 0,
@@ -142,10 +148,12 @@ export const PortfolioRebalancer: React.FC<Props> = ({
     setRebalancing(true);
     console.log(`Rebalance my tokens portfolio to ${categories[0].targetAllocation} ${categories[0].name.toLowerCase()}, ${categories[1].targetAllocation} ${categories[1].name.toLowerCase()} and ${categories[2].targetAllocation} ${categories[2].name.toLowerCase()}`);
     try{
-      const { data } = await axios.post(`${BACKEND_URL}/agent`, {
-        message:`Rebalance my tokens portfolio to ${categories[0].targetAllocation} ${categories[0].name.toLowerCase()}, ${categories[1].targetAllocation} ${categories[1].name.toLowerCase()} and ${categories[2].targetAllocation} ${categories[2].name.toLowerCase()}`,
-        chatId: useAgentStore.getState().activeChatId,
-      });
+      const { data } = await axios.post(`${BACKEND_URL}/rebalance`,{
+        agentWalletAddress:agentWalletAddress,
+        stable:categories[0].targetAllocation,
+        native:categories[1].targetAllocation,
+        other:categories[2].targetAllocation
+    });
       setTimeout(() => {
         const rebalancedCategories = categories.map((category) => ({
           ...category,

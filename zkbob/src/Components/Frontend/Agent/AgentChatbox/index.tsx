@@ -53,16 +53,15 @@ export const ChatBox=()=>{
       useAgentStore.getState().handleOpenArena();
       useAgentStore.getState().setFetching(true);
       try {
-        const { data } = await axios.post(`${BACKEND_URL}/agent`, {
-          message: userInputRef.current?.value,
-          chatId: chatId,
-          agentKey:agentKey,
-          agentWalletAddress:agentWalletAddress
-        });
+        const data = await axios.post(`${BACKEND_URL}/agent`,{
+          messages:[{
+           role:"user",
+          content:`${userInputRef.current?.value}`
+          }],
+          address:agentWalletAddress
+        })
         console.log("the response from the agent is", data);
-        const response: string = FormatDisplayTextForChat(
-          data.data.agentResponse
-        );
+        const response: string =data.data.message.finalResponse
         useAgentStore.getState().setActiveResponse(response);
         useAgentStore.getState().setFetching(false);
         useAgentStore.getState().setAgentResponses({
