@@ -8,12 +8,20 @@
 [![Backend](https://img.shields.io/badge/backend-HackerGames__backend-181717?logo=github)](https://github.com/Devanshgoel-123/HackerGames_backend)
 ![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![Starknet](https://img.shields.io/badge/Starknet-EC796B?logo=starknet&logoColor=white)
+![Starknet](https://img.shields.io/badge/Starknet-EC796B?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyBmaWxsPSIjZmZmZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4gICAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIgMjFhOSA5IDAgMSAxIDAtMTggOSA5IDAgMSAxIDAgMThtNi45MzItMTEuNTJjLS4zMDYtLjc3LS44NzMtMS40Mi0xLjYzNi0xLjg5OGE0LjAyIDQuMDIgMCAwIDAtMi44NTItLjUxYy0uNTE1LjEtMS4wMTQuMjkyLTEuNDUyLjU0N2E2IDYgMCAwIDAtMS4xNjUuODkgOSA5IDAgMCAwLS40NzUuNTFsLS4zOTQuNTAyLS42MS44MS0uMTM3LjE4NWMtLjc0Ljk5Ny0xLjU1NyAyLjEtMi44NSAyLjQ0LTEuMDUuMjc3LTEuNjM3LjE0Ny0yLjIzNS4wMTVhOCA4IDAgMCAwLS41Mi0uMTA0IDYuNCA2LjQgMCAwIDAgMS4yMSAyLjAzNGMuNTMyLjYgMS4xOTcgMS4xNDYgMi4wNTIgMS41MDYuODQyLjM2NyAxLjkuNSAyLjg5LjMuOTkzLS4xOSAxLjg2NC0uNjUgMi41NjctMS4xODFhOS4yIDkuMiAwIDAgMCAxLjc1OC0xLjc4M2MuMTMzLS4xNzUuMjA0LS4yNzQuMy0uNDFsLjI2NS0uMzk1Yy4wOTMtLjEyMi4xODItLjI1My4yNy0uMzgzcS4xMy0uMTk3LjI2Ni0uMzc4bC4wNTUtLjA3OWMuMzQtLjQ3OS42NzgtLjk1NiAxLjA2Ny0xLjM5Ny4yMDctLjIzNS40MjUtLjQ2LjY4Mi0uNjc4LjEyOS0uMTA1LjI2Ny0uMjEuNDItLjMwMmEyIDIgMCAwIDEgLjUyNC0uMjRtLTEwLjY4LS4yODctLjIyMi42ODdhLjEwMi4xMDIgMCAwIDEtLjE5NS0uMDAybC0uMjExLS42OWEuNDUuNDUgMCAwIDAtLjI5Mi0uMjk1bC0uNjg2LS4yMjJhLjEwMi4xMDIgMCAwIDEgLjAwMS0uMTk1bC42OS0uMjEyYS40NS40NSAwIDAgMCAuMjk2LS4yOWwuMjIyLS42ODdjLjAzLS4wOTUuMTY1LS4wOTQuMTk0LjAwMWwuMjEyLjY5YS40NS40NSAwIDAgMCAuMjkxLjI5NmwuNjg3LjIyMmMuMDk1LjAzLjA5NC4xNjUtLjAwMi4xOTRsLS42OS4yMTJhLjQ1LjQ1IDAgMCAwLS4yOTUuMjkxbTguMzE0IDcuNzE3YTEuMDI1IDEuMDI1IDAgMSAxIDAtMi4wNTEgMS4wMjUgMS4wMjUgMCAwIDEgMCAyLjA1IiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4K)
 ![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?logo=langchain&logoColor=white)
 
 zkBob lets you run your Starknet DeFi portfolio by chatting. Ask it to analyse a token, find yield, swap, send funds to a saved contact by name, or rebalance your portfolio. You can also hand it a budget and let it trade on its own, within the stop-loss and profit targets you set.
 
 This repo is the **Next.js frontend**. The agent, tools, and scheduled jobs live in [HackerGames_backend](https://github.com/Devanshgoel-123/HackerGames_backend).
+
+![zkBob agent chat](docs/screenshot.png)
+
+> The hosted demo's backend is offline right now, so the UI loads but the agent won't answer. Run both repos locally (below) to try it.
+
+## What I built
+
+This was a three-person hackathon team. I built the agent backend in [HackerGames_backend](https://github.com/Devanshgoel-123/HackerGames_backend): the LangGraph agent, the swap, portfolio and yield-farming functions, the Prisma schema, the API routes, and the deployment. My teammates built most of this frontend and the Twitter and market-analysis tools.
 
 ## Features
 
